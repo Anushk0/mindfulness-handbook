@@ -1,13 +1,15 @@
 /* ==========================================================================
    MINDFULNESS HANDBOOK — behaviour
-   Renders js/content.js into the page and runs the interactions:
-   header + menu, scroll reveals, chapter reader, breathing guide,
-   guided practice player and the on-device journal. No dependencies.
+   Runs both pages. Renders js/content.js (and js/theories.js on the Happiness
+   at Work page) and handles the interactions: header + menu, scroll reveals,
+   chapter reader, worksheets, breathing guide, guided practice player,
+   quizzes and the on-device journal. No dependencies.
    ========================================================================== */
 (() => {
   "use strict";
 
   const C = window.HANDBOOK;
+  const T = window.THEORIES || null;
   const ART = window.ART;
   if (!C || !ART) {
     console.error("content.js and art.js must load before app.js");
@@ -21,6 +23,10 @@
   const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   // calm mode is decided in <head> (OS setting or the footer switch) as html.reduce-motion
   const reduced = () => root.classList.contains("reduce-motion");
+
+  // one script serves both pages; these say which one we're on
+  const isHandbook = !!$("[data-reader]");
+  const isTheories = !!T && !!$("[data-theories]");
 
   const esc = (s) =>
     String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -39,6 +45,8 @@
 
   const chapters = [...C.chapters].sort((a, b) => a.number - b.number);
   const byNum = (n) => chapters.find((c) => c.number === n);
+  const sectionOf = (ch) => C.sections.find((s) => s.id === ch.section);
+  const inSection = (sec) => chapters.filter((c) => c.section === sec.id);
 
   const toastEl = $("[data-toast]");
   let toastTimer;
@@ -81,37 +89,39 @@
     ...chapters.flatMap((ch) =>
       ch.blocks
         .filter((b) => b.type === "prompt")
-        .map((b) => ({ key: b.key, text: b.text, label: `Chapter ${pad2(ch.number)} · ${ch.title}` }))
+        .map((b) => ({ key: b.key, text: b.text, label: `Chapter ${pad2(ch.number)} · ${ch.title}`, group: ch.section }))
     ),
-    ...(C.prompts || []).map((p) => ({ key: p.key, text: p.text, label: p.label || "Everyday" }))
+    ...(C.prompts || []).map((p) => ({ key: p.key, text: p.text, label: p.label || "Everyday", group: "E" }))
   ];
 
   /* ==========================================================================
      RENDER
      ========================================================================== */
   function bindText() {
+    const data = { ...C, theories: T };
     $$("[data-bind]").forEach((el) => {
-      const v = get(C, el.dataset.bind);
+      const v = get(data, el.dataset.bind);
       if (v != null && v !== "") el.textContent = v;
     });
     $$("[data-bind-rich]").forEach((el) => {
-      const v = get(C, el.dataset.bindRich);
+      const v = get(data, el.dataset.bindRich);
       if (v != null && v !== "") el.innerHTML = rich(v);
     });
-    document.title = C.meta.title;
+    const meta = isTheories ? T.meta : C.meta;
+    document.title = meta.title;
     const desc = $('meta[name="description"]');
-    if (desc && C.meta.description) desc.setAttribute("content", C.meta.description);
+    if (desc && meta.description) desc.setAttribute("content", meta.description);
   }
 
-  function renderHero() {
-    $("[data-hero-title]").innerHTML = C.hero.headline
+  function renderHero(hero = C.hero) {
+    $("[data-hero-title]").innerHTML = hero.headline
       .map((line, i) => `<span class="line"><span style="--i:${i}">${rich(line)}</span></span>`)
       .join("");
     $("[data-hero-scene]").innerHTML = ART.heroScene();
   }
 
-  function renderTicker() {
-    const words = Array(4).fill(C.ticker).flat();
+  function renderTicker(list = C.ticker) {
+    const words = Array(4).fill(list).flat();
     const group = words.map((w) => `<span>${esc(w)}</span>`).join("");
     $("[data-ticker]").innerHTML = `<div class="ticker__group">${group}</div><div class="ticker__group">${group}</div>`;
   }
@@ -126,42 +136,59 @@
 
   function renderStats() {
     const items = [
+      [C.sections.length, "Sections"],
       [chapters.length, "Chapters"],
-      [C.practices.length, "Guided practices"],
-      [allPrompts().length, "Reflections"]
+      [C.practices.length, "Guided practices"]
     ];
     $("[data-stats]").innerHTML = items
       .map(([n, label], i) => `<li class="stat" data-reveal style="--i:${i}"><strong>${n}</strong><span>${esc(label)}</span></li>`)
       .join("");
   }
 
-  function renderChapterGrid() {
-    $("[data-chapter-grid]").innerHTML = chapters
-      .map(
-        (ch, i) => `
+  function chapterCardHTML(ch, i) {
+    return `
       <li class="ch-card" data-reveal style="--i:${i % 3}">
         <a class="has-art" href="#chapter-${ch.number}">
           <span class="ch-card__art grain">${ART.render(ch.art)}</span>
           <span class="ch-card__eyebrow">Chapter ${pad2(ch.number)} · ${esc(ch.minutes)} min read</span>
-          <h3 class="ch-card__title">${esc(plain(ch.title))}</h3>
+          <h4 class="ch-card__title">${esc(plain(ch.title))}</h4>
           <span class="ch-card__summary">${rich(ch.summary)}</span>
           <span class="pill pill--sm">Read chapter <span class="arrow" aria-hidden="true">→</span></span>
         </a>
-      </li>`
+      </li>`;
+  }
+
+  function renderChapterGrid() {
+    $("[data-chapter-grid]").innerHTML = C.sections
+      .map(
+        (sec) => `
+      <section class="ch-group" aria-labelledby="sec-${sec.id}">
+        <header class="ch-group__head" data-reveal>
+          <p class="eyebrow">Section ${esc(sec.id)}</p>
+          <h3 class="ch-group__title" id="sec-${sec.id}">${esc(sec.title)}</h3>
+          <p class="ch-group__blurb">${rich(sec.blurb)}</p>
+        </header>
+        <ol class="chapter-grid">${inSection(sec).map(chapterCardHTML).join("")}</ol>
+      </section>`
       )
       .join("");
   }
 
   function renderNavLists() {
-    const links = chapters.map((ch) => `<li><a href="#chapter-${ch.number}">${esc(plain(ch.title))}</a></li>`).join("");
-    $("[data-menu-chapters]").innerHTML = links;
-    $("[data-footer-chapters]").innerHTML = links;
-    $("[data-rail]").innerHTML = chapters
+    $("[data-menu-chapters]").innerHTML = chapters
+      .map((ch) => `<li><a href="#chapter-${ch.number}">${esc(plain(ch.title))}</a></li>`)
+      .join("");
+    $("[data-footer-chapters]").innerHTML = C.sections
+      .map((sec) => `<li><a href="#chapter-${inSection(sec)[0].number}">Section ${esc(sec.id)} · ${esc(sec.title)}</a></li>`)
+      .join("");
+    const railBtn = (ch) =>
+      `<li><button type="button" class="rail-btn" data-chapter="${ch.number}"><span class="rail-btn__num">${pad2(
+        ch.number
+      )}</span><span>${esc(plain(ch.title))}</span></button></li>`;
+    $("[data-rail]").innerHTML = C.sections
       .map(
-        (ch) =>
-          `<li><button type="button" class="rail-btn" data-chapter="${ch.number}"><span class="rail-btn__num">${pad2(
-            ch.number
-          )}</span><span>${esc(plain(ch.title))}</span></button></li>`
+        (sec) =>
+          `<li class="rail-group" role="presentation">Section ${esc(sec.id)} · ${esc(sec.title)}</li>${inSection(sec).map(railBtn).join("")}`
       )
       .join("");
   }
@@ -178,7 +205,129 @@
     </div>`;
   }
 
-  function blockHTML(b) {
+  /* ---------- worksheets (answers saved in the journal store) ---------- */
+  function choicesHTML(b, forPrint) {
+    if (forPrint) return `<h4>${rich(b.title)}</h4><p>${b.options.map((o) => esc(o)).join(" · ")}</p>`;
+    return `<div class="ws" role="group" aria-labelledby="ws-${esc(b.key)}" data-ws="choices" data-key="${esc(b.key)}" data-max="${b.max}">
+      <p class="ws__title" id="ws-${esc(b.key)}">${rich(b.title)}</p>
+      <div class="ws-chips">${b.options
+        .map((o) => `<label class="ws-chip"><input type="checkbox" value="${esc(o)}"><span>${esc(o)}</span></label>`)
+        .join("")}</div>
+      <div class="ws__foot"><p class="ws__status" data-ws-status aria-live="polite"></p></div>
+    </div>`;
+  }
+
+  function ratingHTML(b, forPrint) {
+    if (forPrint)
+      return `<h4>${rich(b.title)}</h4><p>${rich(b.hint)}</p><ul class="dots">${b.items
+        .map((it) => `<li>${esc(it.label)}: A &nbsp; B &nbsp; C &nbsp; D</li>`)
+        .join("")}</ul>`;
+    const rows = b.items
+      .map((it, i) => {
+        const name = `${b.key}.${i}`;
+        const labelId = `ws-${b.key}-${i}`;
+        return `<div class="ws-rate">
+          <div class="ws-rate__label" id="${esc(labelId)}"><strong>${esc(it.label)}</strong><small>${esc(it.hint)}</small></div>
+          <div class="ws-rate__opts" role="radiogroup" aria-labelledby="${esc(labelId)}">${["A", "B", "C", "D"]
+            .map((v) => `<label class="ws-opt"><input type="radio" name="${esc(name)}" value="${v}"><span>${v}</span></label>`)
+            .join("")}</div>
+        </div>`;
+      })
+      .join("");
+    return `<div class="ws" data-ws="rating" data-key="${esc(b.key)}">
+      <p class="ws__title">${rich(b.title)}</p>
+      <p class="ws__hint">${rich(b.hint)}</p>
+      ${rows}
+      <div class="ws__foot"><p class="ws__status" data-ws-status aria-live="polite"></p></div>
+    </div>`;
+  }
+
+  function checklistHTML(b, forPrint) {
+    if (forPrint)
+      return `<h4>${rich(b.title)}</h4>${b.groups
+        .map((g) => `<p><strong>${esc(g.title)}</strong></p><ul class="dots">${g.items.map((it) => `<li>${rich(it)}</li>`).join("")}</ul>`)
+        .join("")}`;
+    const groups = b.groups
+      .map(
+        (g, gi) => `<div class="ws-group">
+        <p class="ws-group__head"><strong>${esc(g.title)}</strong><span>${esc(g.note)}</span></p>
+        ${g.items
+          .map(
+            (it, ii) =>
+              `<label class="ws-check"><input type="checkbox" data-item="${esc(`${b.key}.${gi}.${ii}`)}"><span class="ws-check__box" aria-hidden="true"></span><span>${rich(it)}</span></label>`
+          )
+          .join("")}
+      </div>`
+      )
+      .join("");
+    return `<div class="ws" data-ws="checklist" data-key="${esc(b.key)}">
+      <p class="ws__title">${rich(b.title)}</p>
+      ${groups}
+      <div class="ws__foot">
+        <p class="ws__status" data-ws-status aria-live="polite"></p>
+        <button type="button" class="text-btn" data-ws-reset>${esc(b.reset)}</button>
+      </div>
+    </div>`;
+  }
+
+  function matrixHTML(b, forPrint) {
+    if (forPrint) return `<h4>${rich(b.title)}</h4><ul class="dots">${b.cells.map((c) => `<li><strong>${esc(c.label)}:</strong> ${esc(c.hint)}</li>`).join("")}</ul>`;
+    return `<div class="ws">
+      <p class="ws__title">${rich(b.title)}</p>
+      <div class="matrix">${b.cells
+        .map((c) => {
+          const key = `${b.key}.${c.key}`;
+          const id = `note-${key.replace(/\W/g, "-")}`;
+          return `<div class="prompt matrix__cell">
+            <label class="matrix__label" for="${esc(id)}"><strong>${esc(c.label)}</strong><span>${esc(c.hint)}</span></label>
+            <textarea class="lined" id="${esc(id)}" rows="3" data-journal-key="${esc(key)}"></textarea>
+            <div class="prompt__foot"><span class="saved" aria-live="polite"></span></div>
+          </div>`;
+        })
+        .join("")}</div>
+    </div>`;
+  }
+
+  /* ---------- information blocks ---------- */
+  function compareColHTML(col, forPrint) {
+    const details = (col.details || [])
+      .map((d) =>
+        forPrint
+          ? `<p><strong>${rich(d.title)}.</strong> ${rich(d.text)}</p>`
+          : `<details class="factor"><summary>${rich(d.title)}</summary><p>${rich(d.text)}</p></details>`
+      )
+      .join("");
+    return `<div class="compare__col">
+      ${col.tag ? `<p class="eyebrow">${esc(col.tag)}</p>` : ""}
+      <h4 class="compare__title">${rich(col.title)}</h4>
+      ${col.text ? `<p>${rich(col.text)}</p>` : ""}
+      ${details}
+    </div>`;
+  }
+
+  function quizHTML(b) {
+    const questions = b.questions
+      .map(
+        (q) => `<div class="quiz__q" data-q data-answer="${q.answer}">
+        <p class="quiz__text">${rich(q.q)}</p>
+        <div class="quiz__opts">${q.options
+          .map((o, i) => `<button type="button" class="quiz__opt" data-opt="${i}">${esc(o)}</button>`)
+          .join("")}</div>
+        <p class="quiz__why" aria-live="polite" hidden>${rich(q.why)}</p>
+      </div>`
+      )
+      .join("");
+    return `<div class="quiz" data-quiz>
+      <p class="eyebrow">${esc(b.title)}</p>
+      ${questions}
+      <div class="quiz__foot" hidden>
+        <p class="quiz__score" data-quiz-score aria-live="polite"></p>
+        <button type="button" class="pill pill--light pill--sm" data-quiz-reset>Try again</button>
+      </div>
+    </div>`;
+  }
+
+  function blockHTML(b, forPrint = false) {
     switch (b.type) {
       case "lead":
         return `<p class="lead">${rich(b.text)}</p>`;
@@ -204,21 +353,67 @@
         return promptHTML({ key: b.key, text: b.text }, "inline");
       case "quote":
         return `<blockquote class="pull"><p>${rich(b.text)}</p>${b.cite ? `<footer>${esc(b.cite)}</footer>` : ""}</blockquote>`;
+      case "cards":
+        return `<div class="cards${b.cols ? ` cards--${b.cols}` : ""}">${b.items
+          .map(
+            (c) => `<div class="info-card">
+              <p class="info-card__title">${rich(c.title)}</p>
+              <p>${rich(c.text)}</p>
+              ${c.note ? `<p class="info-card__note">${rich(c.note)}</p>` : ""}
+            </div>`
+          )
+          .join("")}</div>`;
+      case "table":
+        return `${b.title ? `<h4>${rich(b.title)}</h4>` : ""}<div class="table-wrap" tabindex="0" role="region" aria-label="${esc(
+          plain(b.title || "Table")
+        )}"><table class="data-table"><thead><tr>${b.head
+          .map((h, i) => (h ? `<th scope="col">${esc(h)}</th>` : `<td${i ? "" : ' class="data-table__blank"'}></td>`))
+          .join("")}</tr></thead><tbody>${b.rows
+          .map((r) => `<tr>${r.map((cell, i) => (i ? `<td>${rich(cell)}</td>` : `<th scope="row">${rich(cell)}</th>`)).join("")}</tr>`)
+          .join("")}</tbody></table></div>`;
+      case "chips":
+        return `${b.title ? `<h4>${rich(b.title)}</h4>` : ""}<ul class="chips${b.words ? " chips--words" : ""}">${b.items
+          .map((it) =>
+            typeof it === "string" ? `<li class="chip">${esc(it)}</li>` : `<li class="chip" lang="${esc(it.lang)}">${esc(it.text)}</li>`
+          )
+          .join("")}</ul>`;
+      case "compare":
+        return `<div class="compare">${compareColHTML(b.left, forPrint)}${compareColHTML(b.right, forPrint)}</div>`;
+      case "formula":
+        return `<div class="formula">${b.terms
+          .map(
+            (t, i) =>
+              `${i ? '<span class="formula__op" aria-hidden="true">+</span>' : ""}<div class="formula__term"><strong>${rich(
+                t.label
+              )}</strong><span>${rich(t.note)}</span></div>`
+          )
+          .join("")}<div class="formula__result">${rich(b.result)}</div></div>`;
+      case "quiz":
+        return forPrint ? "" : quizHTML(b);
+      case "choices":
+        return choicesHTML(b, forPrint);
+      case "rating":
+        return ratingHTML(b, forPrint);
+      case "checklist":
+        return checklistHTML(b, forPrint);
+      case "matrix":
+        return matrixHTML(b, forPrint);
       default:
         return "";
     }
   }
 
   function chapterHTML(ch, forPrint = false) {
+    const sec = sectionOf(ch);
     const body = ch.blocks
       .map((b) =>
-        forPrint && b.type === "prompt" ? `<p class="print-prompt"><em>Reflect:</em> ${rich(b.text)}</p>` : blockHTML(b)
+        forPrint && b.type === "prompt" ? `<p class="print-prompt"><em>Reflect:</em> ${rich(b.text)}</p>` : blockHTML(b, forPrint)
       )
       .join("");
     return `<header class="chapter__head">
         <span class="chapter__numeral" aria-hidden="true">${pad2(ch.number)}</span>
         <div>
-          <p class="eyebrow">Chapter ${WORDS[ch.number] || ch.number} · ${esc(ch.minutes)} min read</p>
+          <p class="eyebrow">Section ${esc(sec.id)} · ${esc(sec.title)} · ${esc(ch.minutes)} min read</p>
           <h3 class="chapter__title"${forPrint ? "" : ' tabindex="-1" data-chapter-title'}>${rich(ch.title)}</h3>
         </div>
       </header>
@@ -249,9 +444,53 @@
   }
 
   function renderJournal() {
-    $("[data-journal]").innerHTML = allPrompts()
-      .map((p, i) => promptHTML(p, "journal", i))
+    const prompts = allPrompts();
+    const groups = [...C.sections.map((s) => ({ id: s.id, label: s.title })), { id: "E", label: "Everyday" }].map((g) => ({
+      ...g,
+      prompts: prompts.filter((p) => p.group === g.id)
+    }));
+    const tabs = groups
+      .map(
+        (g, i) =>
+          `<button type="button" role="tab" class="tab-pill tab-pill--ink" id="jt-${g.id}" aria-controls="jp-${g.id}" aria-selected="${i === 0}" tabindex="${
+            i === 0 ? 0 : -1
+          }">${esc(g.label)}<small>${g.prompts.length}</small></button>`
+      )
       .join("");
+    const panels = groups
+      .map(
+        (g, i) =>
+          `<div class="journal" role="tabpanel" id="jp-${g.id}" aria-labelledby="jt-${g.id}"${i === 0 ? "" : " hidden"}>${g.prompts
+            .map((p, j) => promptHTML(p, "journal", j))
+            .join("")}</div>`
+      )
+      .join("");
+    $("[data-journal]").innerHTML = `<div class="journal-tabs" role="tablist" aria-label="Journal sections">${tabs}</div>${panels}`;
+  }
+
+  function setupJournalTabs() {
+    const list = $(".journal-tabs");
+    const tabs = $$("[role='tab']", list);
+    const select = (tab, focus) => {
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.setAttribute("aria-selected", String(on));
+        t.tabIndex = on ? 0 : -1;
+        $(`#${t.getAttribute("aria-controls")}`).hidden = !on;
+      });
+      if (focus) tab.focus();
+    };
+    list.addEventListener("click", (e) => {
+      const tab = e.target.closest("[role='tab']");
+      if (tab) select(tab);
+    });
+    list.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      e.preventDefault();
+      const step = e.key === "ArrowRight" ? 1 : -1;
+      const now = tabs.findIndex((t) => t.getAttribute("aria-selected") === "true");
+      select(tabs[(now + step + tabs.length) % tabs.length], true);
+    });
   }
 
   function renderAbout() {
@@ -291,6 +530,102 @@
     $$("[data-print-for]", root).forEach((el) => {
       el.textContent = journal[el.dataset.printFor] || "";
     });
+    $$("[data-ws]", root).forEach((ws) => {
+      const key = ws.dataset.key;
+      const kind = ws.dataset.ws;
+      const chosen = kind === "choices" ? (journal[key] || "").split(", ") : [];
+      $$("input", ws).forEach((i) => {
+        if (kind === "choices") i.checked = chosen.includes(i.value);
+        else if (kind === "rating") i.checked = journal[i.name] === i.value;
+        else i.checked = journal[i.dataset.item] === "1";
+      });
+      updateWorksheet(ws);
+    });
+  }
+
+  function updateWorksheet(ws) {
+    const status = $("[data-ws-status]", ws);
+    if (ws.dataset.ws === "choices") {
+      status.textContent = `${$$("input:checked", ws).length} of ${ws.dataset.max} chosen`;
+    } else if (ws.dataset.ws === "rating") {
+      const date = journal[`${ws.dataset.key}.date`];
+      status.textContent = date ? `Last rated ${date}` : "Not rated yet";
+    } else {
+      const boxes = $$("input", ws);
+      status.textContent = `${boxes.filter((i) => i.checked).length} of ${boxes.length} done`;
+    }
+  }
+
+  document.addEventListener("change", (e) => {
+    if (!(e.target instanceof Element)) return;
+    const ws = e.target.closest("[data-ws]");
+    if (!ws) return;
+    const key = ws.dataset.key;
+    if (ws.dataset.ws === "choices") {
+      const chosen = $$("input:checked", ws).map((i) => i.value);
+      const max = Number(ws.dataset.max);
+      if (chosen.length > max) {
+        e.target.checked = false;
+        toast(`Choose up to ${WORDS[max].toLowerCase()}. Untick one to swap it.`);
+        return;
+      }
+      journal[key] = chosen.join(", ");
+    } else if (ws.dataset.ws === "rating") {
+      journal[e.target.name] = e.target.value;
+      journal[`${key}.date`] = new Date().toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+    } else if (e.target.checked) {
+      journal[e.target.dataset.item] = "1";
+    } else {
+      delete journal[e.target.dataset.item];
+    }
+    store.write(journal);
+    updateWorksheet(ws);
+  });
+
+  function resetChecklist(ws) {
+    Object.keys(journal)
+      .filter((k) => k.startsWith(`${ws.dataset.key}.`))
+      .forEach((k) => delete journal[k]);
+    store.write(journal);
+    hydrateNotes(ws.parentElement);
+    toast("Checklist cleared for a new week");
+  }
+
+  // Worksheet answers, as plain lines for the downloaded notes.
+  function worksheetLines() {
+    const out = [];
+    const add = (title, rows) => {
+      if (rows.length) out.push(plain(title).toUpperCase(), ...rows, "");
+    };
+    chapters.forEach((ch) =>
+      ch.blocks.forEach((b) => {
+        if (b.type === "choices" && journal[b.key]) add(b.title, [journal[b.key]]);
+        if (b.type === "rating") {
+          add(
+            b.title,
+            b.items.flatMap((it, i) => (journal[`${b.key}.${i}`] ? [`${it.label}: ${journal[`${b.key}.${i}`]}`] : []))
+          );
+        }
+        if (b.type === "checklist") {
+          add(
+            b.title,
+            b.groups.flatMap((g, gi) =>
+              g.items.flatMap((it, ii) => (journal[`${b.key}.${gi}.${ii}`] ? [`${g.title}: ${plain(it)}`] : []))
+            )
+          );
+        }
+        if (b.type === "matrix") {
+          add(
+            b.title,
+            b.cells.flatMap((c) => {
+              const v = (journal[`${b.key}.${c.key}`] || "").trim();
+              return v ? [`${c.label}: ${v}`] : [];
+            })
+          );
+        }
+      })
+    );
+    return out;
   }
 
   let saveTimer;
@@ -323,6 +658,7 @@
       allPrompts().forEach((p) => {
         lines.push(plain(p.label).toUpperCase(), plain(p.text), (journal[p.key] || "—").trim(), "");
       });
+      lines.push(...worksheetLines());
       const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
@@ -406,6 +742,14 @@
         : `<a class="pager__btn pager__btn--next" href="#practice"><small>Up next →</small><span>Practise what you've read</span></a>`);
   }
 
+  // Slide new content in. Reading offsetWidth applies the start position straight away,
+  // so the content can't get stuck hidden if the browser isn't drawing frames.
+  function playIn(el, dir) {
+    el.classList.add(`is-in-${dir}`);
+    void el.offsetWidth;
+    el.classList.remove(`is-in-${dir}`);
+  }
+
   function setChapter(n, { scroll = false, focus = false, animate = true } = {}) {
     const ch = byNum(n);
     if (!ch) return;
@@ -423,10 +767,7 @@
       pane.innerHTML = `<div class="chapter__inner">${chapterHTML(ch)}</div>`;
       hydrateNotes(pane);
       const inner = pane.firstElementChild;
-      if (motion) {
-        inner.classList.add(`is-in-${dir}`);
-        requestAnimationFrame(() => requestAnimationFrame(() => inner.classList.remove(`is-in-${dir}`)));
-      }
+      if (motion) playIn(inner, dir);
       if (focus) $("[data-chapter-title]", pane)?.focus({ preventScroll: true });
     };
 
@@ -541,6 +882,7 @@
   }
 
   function pacerStop() {
+    if (!isHandbook) return;
     if (!pacer.running && $("[data-pacer-stage]").classList.contains("is-idle")) return;
     pacer.running = false;
     clearTimeout(pacer.timer);
@@ -761,6 +1103,169 @@
   }
 
   /* ==========================================================================
+     HAPPINESS AT WORK PAGE (one part at a time, like the chapter reader)
+     ========================================================================== */
+  const partPane = $("[data-part-pane]");
+  let currentPart = 0;
+  let partTimer;
+
+  const partFromHash = (hash) => {
+    const m = /^#part-(\d+)$/.exec(hash || "");
+    return m ? Number(m[1]) : null;
+  };
+
+  function topicHTML(t, forPrint) {
+    return `<section class="topic" id="${esc(t.id)}"${forPrint ? "" : " data-reveal"}>
+      <div class="topic__head">
+        <h3 class="topic__title">${rich(t.title)}</h3>
+        ${t.byline ? `<p class="topic__by">${esc(t.byline)}</p>` : ""}
+      </div>
+      <div class="chapter__body">${t.blocks
+        .map((b) =>
+          forPrint && b.type === "prompt" ? `<p class="print-prompt"><em>Reflect:</em> ${rich(b.text)}</p>` : blockHTML(b, forPrint)
+        )
+        .join("")}</div>
+    </section>`;
+  }
+
+  function partHTML(p, i, forPrint = false) {
+    return `<header class="chapter__head">
+        <span class="chapter__numeral" aria-hidden="true">${pad2(i + 1)}</span>
+        <div>
+          <p class="eyebrow">Part ${WORDS[i + 1]} · ${esc(p.eyebrow)}</p>
+          <h2 class="chapter__title"${forPrint ? "" : ' tabindex="-1" data-chapter-title'}>${rich(p.title)}</h2>
+        </div>
+      </header>
+      <p class="part__lead">${rich(p.lead)}</p>
+      ${p.topics.map((t) => topicHTML(t, forPrint)).join("")}`;
+  }
+
+  function renderTheories() {
+    renderHero(T.hero);
+    renderTicker(T.ticker);
+    const links = T.parts.map((p, i) => `<li><a href="#part-${i + 1}">${esc(plain(p.short))}</a></li>`).join("");
+    $("[data-menu-chapters]").innerHTML = links;
+    $("[data-footer-chapters]").innerHTML = links;
+    $("[data-parts]").innerHTML = T.parts
+      .map(
+        (p, i) =>
+          `<button type="button" class="part-tab" data-part="${i + 1}" aria-current="false"><span class="part-tab__num">${pad2(
+            i + 1
+          )}</span><span>${esc(plain(p.short))}</span></button>`
+      )
+      .join("");
+    $("[data-print-chapters]").innerHTML = T.parts
+      .map((p, i) => `<div class="chapter__inner">${partHTML(p, i, true)}</div>`)
+      .join("");
+  }
+
+  function updatePartChrome(n) {
+    $$(".part-tab").forEach((b) => {
+      const on = Number(b.dataset.part) === n;
+      b.setAttribute("aria-current", on ? "true" : "false");
+      if (on && window.matchMedia("(max-width: 860px)").matches) {
+        b.parentElement.scrollTo({ left: b.offsetLeft - 16, behavior: reduced() ? "auto" : "smooth" });
+      }
+    });
+    const prev = T.parts[n - 2];
+    const next = T.parts[n];
+    $("[data-part-pager]").innerHTML =
+      (prev
+        ? `<button type="button" class="pager__btn" data-part="${n - 1}"><small>← Previous</small><span>${esc(plain(prev.short))}</span></button>`
+        : `<a class="pager__btn" href="index.html"><small>← Back</small><span>The handbook</span></a>`) +
+      (next
+        ? `<button type="button" class="pager__btn pager__btn--next" data-part="${n + 1}"><small>Next →</small><span>${esc(plain(next.short))}</span></button>`
+        : `<a class="pager__btn pager__btn--next" href="index.html#chapter-1"><small>Now try it →</small><span>Start the handbook</span></a>`);
+  }
+
+  function setPart(n, { scroll = false, focus = false, animate = true } = {}) {
+    const part = T.parts[n - 1];
+    if (!part) return;
+    const scrollToStage = () => scrollToEl($("[data-parts-anchor]"), 96);
+    if (n === currentPart && partPane.firstElementChild) {
+      if (scroll) scrollToStage();
+      return;
+    }
+    const dir = n > currentPart ? "next" : "prev";
+    const old = partPane.firstElementChild;
+    const motion = animate && !reduced();
+    currentPart = n;
+    updatePartChrome(n);
+
+    const swapIn = () => {
+      partPane.innerHTML = `<div class="chapter__inner">${partHTML(part, n - 1)}</div>`;
+      hydrateNotes(partPane);
+      observeReveals(partPane);
+      const inner = partPane.firstElementChild;
+      if (motion) playIn(inner, dir);
+      if (focus) $("[data-chapter-title]", partPane)?.focus({ preventScroll: true });
+    };
+
+    clearTimeout(partTimer);
+    if (old && motion) {
+      old.classList.add(`is-out-${dir}`);
+      partTimer = setTimeout(swapIn, 360);
+    } else {
+      swapIn();
+    }
+    if (scroll) scrollToStage();
+  }
+
+  function goToPart(n) {
+    if (!T.parts[n - 1]) return;
+    try {
+      history.replaceState(null, "", `#part-${n}`);
+    } catch {
+      /* the part still opens */
+    }
+    setPart(n, { scroll: true, focus: true });
+  }
+
+  function setupParts() {
+    const fromHash = partFromHash(location.hash);
+    setPart(fromHash && T.parts[fromHash - 1] ? fromHash : 1, { animate: false });
+    if (fromHash) setTimeout(() => scrollToEl($("[data-parts-anchor]"), 96), 80);
+    window.addEventListener("hashchange", () => {
+      const n = partFromHash(location.hash);
+      if (n) setPart(n, { scroll: true, focus: true });
+    });
+  }
+
+  /* ---------- quizzes ---------- */
+  function answerQuiz(opt) {
+    const q = opt.closest("[data-q]");
+    const answer = Number(q.dataset.answer);
+    const chosen = Number(opt.dataset.opt);
+    const buttons = $$(".quiz__opt", q);
+    buttons.forEach((b) => (b.disabled = true));
+    buttons[answer].classList.add("is-right");
+    if (chosen !== answer) opt.classList.add("is-wrong");
+    q.dataset.correct = String(chosen === answer);
+    $(".quiz__why", q).hidden = false;
+
+    const quiz = q.closest("[data-quiz]");
+    const all = $$("[data-q]", quiz);
+    if (all.every((x) => x.dataset.correct)) {
+      const right = all.filter((x) => x.dataset.correct === "true").length;
+      $("[data-quiz-score]", quiz).textContent = `You got ${right} of ${all.length}.`;
+      $(".quiz__foot", quiz).hidden = false;
+    }
+  }
+
+  function resetQuiz(quiz) {
+    $$("[data-q]", quiz).forEach((q) => {
+      delete q.dataset.correct;
+      $(".quiz__why", q).hidden = true;
+      $$(".quiz__opt", q).forEach((b) => {
+        b.disabled = false;
+        b.classList.remove("is-right", "is-wrong");
+      });
+    });
+    $(".quiz__foot", quiz).hidden = true;
+    $(".quiz__opt", quiz).focus({ preventScroll: true });
+  }
+
+  /* ==========================================================================
      HEADER, MENU, PROGRESS, PARALLAX
      ========================================================================== */
   const header = $("[data-header]");
@@ -808,7 +1313,7 @@
       }
       const max = document.documentElement.scrollHeight - window.innerHeight;
       bar.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
-      if (!reduced() && y < window.innerHeight * 1.3) hero.style.setProperty("--hero-shift", y.toFixed(1));
+      if (hero && !reduced() && y < window.innerHeight * 1.3) hero.style.setProperty("--hero-shift", y.toFixed(1));
     };
     window.addEventListener(
       "scroll",
@@ -897,6 +1402,26 @@
         openPractice(practiceBtn.dataset.openPractice);
         return;
       }
+      const quizOpt = e.target.closest(".quiz__opt");
+      if (quizOpt) {
+        answerQuiz(quizOpt);
+        return;
+      }
+      const quizReset = e.target.closest("[data-quiz-reset]");
+      if (quizReset) {
+        resetQuiz(quizReset.closest("[data-quiz]"));
+        return;
+      }
+      const wsReset = e.target.closest("[data-ws-reset]");
+      if (wsReset) {
+        resetChecklist(wsReset.closest("[data-ws]"));
+        return;
+      }
+      const partBtn = e.target.closest("[data-part]");
+      if (partBtn) {
+        goToPart(Number(partBtn.dataset.part));
+        return;
+      }
       if (e.target.closest("[data-hero-breath]")) {
         openPractice(C.hero.practiceId);
         return;
@@ -909,10 +1434,17 @@
       const link = e.target.closest('a[href^="#"]');
       if (!link) return;
       if (document.body.classList.contains("menu-open")) closeMenu(false);
-      const n = chapterFromHash(link.getAttribute("href"));
+      const href = link.getAttribute("href");
+      const n = isHandbook ? chapterFromHash(href) : null;
       if (n) {
         e.preventDefault();
         goToChapter(n);
+        return;
+      }
+      const part = isTheories ? partFromHash(href) : null;
+      if (part) {
+        e.preventDefault();
+        goToPart(part);
       }
     });
 
@@ -931,25 +1463,33 @@
      BOOT
      ========================================================================== */
   bindText();
-  renderHero();
-  renderTicker();
-  renderWelcome();
-  renderStats();
-  renderChapterGrid();
-  renderNavLists();
-  renderPracticeCards();
-  renderJournal();
-  renderAbout();
-  renderFeedback();
   renderFooter();
-  renderPrintChapters();
-  hydrateNotes();
+
+  if (isHandbook) {
+    renderHero();
+    renderTicker();
+    renderWelcome();
+    renderStats();
+    renderChapterGrid();
+    renderNavLists();
+    renderPracticeCards();
+    renderJournal();
+    renderAbout();
+    renderFeedback();
+    renderPrintChapters();
+    hydrateNotes();
+    setupJournalTabs();
+    setupReader();
+    setupPacer();
+    setupJournalActions();
+  }
+  if (isTheories) {
+    renderTheories();
+    setupParts();
+  }
 
   setupHeader();
-  setupReader();
-  setupPacer();
   setupOverlay();
-  setupJournalActions();
   setupMotionToggle();
   setupGlobalEvents();
   observeReveals();

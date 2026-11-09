@@ -1,281 +1,490 @@
 /* ==========================================================================
-   HANDBOOK CONTENT — everything the site displays lives in this one file.
+   HANDBOOK CONTENT — everything the handbook page displays lives in this file.
 
-   IMPORTANT: the text below is ORIGINAL SAMPLE COPY written for this
-   template. It is not taken from any published handbook. Replace it only
-   with content you own, or have the author's written permission to use.
+   The chapters follow the sections and topics of "Mindfulness Handbook:
+   Embark Edition" by Dr Priyal Panchal. The wording is written for this
+   website. One short line in `quote` is the author's own, with credit. To use
+   the author's exact text, replace the fields below with it.
 
    Mini-markup you can use inside any text field:
      *words*    -> italic serif accent (the signature "accent word")
      **words**  -> bold
 
    Chapter block types:
-     { type: "lead",     text }
-     { type: "p",        text }
-     { type: "h3",       text }
-     { type: "list",     title?, items: [] }
-     { type: "callout",  title?, text, action?: { label, href } }
-     { type: "practice", title, steps: [], practiceId? }   // practiceId opens a guided practice
-     { type: "prompt",   key, text }                       // key must be unique; saves to the journal
-     { type: "quote",    text, cite? }
+     { type: "lead",      text }
+     { type: "p",         text }
+     { type: "h3",        text }
+     { type: "list",      title?, items: [] }
+     { type: "cards",     cols?, items: [{ title, text, note? }] }
+     { type: "callout",   title?, text, action?: { label, href } }
+     { type: "practice",  title, steps: [], practiceId? }   // practiceId opens a guided practice
+     { type: "prompt",    key, text }                       // key must be unique; saves to the journal
+     { type: "quote",     text, cite? }
+
+   Worksheets (answers are saved in the visitor's browser):
+     { type: "choices",   key, title, max, options: [] }
+     { type: "rating",    key, title, hint, items: [{ label, hint }] }  // A to D
+     { type: "checklist", key, title, reset, groups: [{ title, note, items: [] }] }
+     { type: "matrix",    key, title, cells: [{ key, label, hint }] }   // 2 x 2 planner
 
    Art keys (generated illustrations, no image files needed):
-     ripple, waves, stones, clouds, horizon, leaf, sunrise, moon, path, arches
+     ripple, waves, stones, clouds, horizon, leaf, sunrise, moon, path, arches,
+     quadrants, bridge, network, pages
    ========================================================================== */
 
 window.HANDBOOK = {
   meta: {
     title: "Mindfulness Handbook",
-    edition: "Web edition",
-    author: "The Author",
+    edition: "Embark Edition",
+    author: "Dr Priyal Panchal",
     year: 2026,
     description:
-      "A gentle, practical companion to mindfulness: short chapters, guided practices and reflection prompts."
+      "Everyday tools from positive psychology, yoga and journaling to help you stay steady at work and in life."
   },
 
   hero: {
-    eyebrow: "A mindfulness handbook · Web edition",
-    headline: ["Return to the *present,*", "one breath at a time."],
-    lead:
-      "Short chapters, guided practices and quiet prompts to help you notice more, react less and come home to yourself.",
-    breathLabel: "Take one mindful breath",
+    eyebrow: "Mindfulness Handbook · Embark Edition",
+    headline: ["Keep your *balance,*", "one small habit at a time."],
+    lead: "Everyday tools from positive psychology, yoga and journaling to help you stay steady at work and in life.",
+    breathLabel: "Take one mindful minute",
     practiceId: "one-minute"
   },
 
-  ticker: ["Pause", "Notice", "Breathe", "Soften", "Begin again"],
+  ticker: ["Self", "Emotions", "Excellence", "Pause", "Breathe", "Begin again"],
 
   welcome: {
-    overlay: { small: "Welcome", large: "to the handbook" },
-    heading: "There is nothing to get right here. *Only something to notice.*",
+    overlay: { small: "Welcome", large: "to the Embark Edition" },
+    heading: "You don't need to be struggling *to look after your mind.*",
     paragraphs: [
-      "Mindfulness is the simple, trainable habit of paying attention to what is happening right now, with curiosity instead of judgement.",
-      "Each chapter is short. Most end with a practice you can try in a few minutes and a question to reflect on. Read in order, or open whichever chapter you need today.",
-      "Go slowly. Skip what doesn't help. Come back to what does."
+      "This handbook offers simple tools for keeping your mental health in good shape at work and in everyday life. Think of it as prevention: small habits that help before things get hard.",
+      "It draws on positive and organisational psychology, yoga, bibliotherapy, and Indian and Japanese wisdom, and it supports UN Sustainable Development Goal 3: Good Health and Well-Being.",
+      "You'll move through three sections: **Self**, **Emotions** and **Excellence**. Most chapters end with something to try and a question to answer."
     ],
     signoff: "*Begin wherever you are.*",
-    cta: { label: "Start reading", href: "#chapter-1" }
+    cta: { label: "Start with Section A", href: "#chapter-1" }
   },
 
+  sections: [
+    { id: "A", title: "Self", blurb: "Get to know how you show up, what you stand for and what sets you off." },
+    { id: "B", title: "Emotions", blurb: "Decide what happiness means to you, then learn to build it on purpose." },
+    { id: "C", title: "Excellence", blurb: "Skills for doing well without wearing yourself out." }
+  ],
+
   chapters: [
+    /* ---------- Section A: Self ---------- */
     {
       number: 1,
-      title: "Understanding mindfulness",
-      art: "ripple",
-      minutes: 6,
-      summary:
-        "What mindfulness is, what it isn't, and why a few minutes a day can change how a day feels.",
+      section: "A",
+      title: "Who you are on a good day",
+      art: "clouds",
+      minutes: 3,
+      summary: "Choose the words that describe how you usually take on the world.",
       blocks: [
-        { type: "lead", text: "Mindfulness is attention with a soft edge: noticing what is here, as it is, without rushing to fix it." },
-        { type: "p", text: "Much of the day runs on autopilot: eating while scrolling, walking while rehearsing a conversation, lying awake replaying one that already happened. Autopilot is useful, but it also means we miss a lot of our own lives." },
-        { type: "p", text: "Mindfulness is the practice of stepping out of autopilot on purpose. It isn't about emptying the mind or feeling calm all the time. It is about noticing, again and again, and returning to the present when you drift." },
-        { type: "list", title: "What it is not", items: ["A way to stop thinking", "A test you can fail", "Only for quiet rooms and long retreats"] },
-        { type: "callout", title: "Remember", text: "Wandering is not a mistake. The moment you notice you've wandered *is* the practice." },
+        { type: "lead", text: "Before you try to change anything, get a clear picture of how you tend to show up." },
+        { type: "p", text: "We all have a default style when things get difficult. Some people take charge, some work out what's really going on, some look after everyone else. Naming your style makes it easier to use on purpose." },
         {
-          type: "practice",
-          title: "Try this · Five-senses check-in",
-          steps: [
-            "Pause wherever you are and let your shoulders drop.",
-            "Name five things you can see.",
-            "Notice four things you can feel: your feet, your clothes, the air.",
-            "Listen for three sounds, near and far.",
-            "Take one slow breath before you carry on."
-          ]
+          type: "choices",
+          key: "a-roles",
+          title: "Pick the three words closest to you",
+          max: 3,
+          options: ["Leader", "Fighter", "Optimist", "Builder", "Decoder", "Healer", "Magician"]
         },
-        { type: "prompt", key: "c1", text: "When during your day do you most often slip into autopilot?" }
+        { type: "callout", title: "If none of them fit", text: "Pick the ones you'd like to grow into. Aiming at a role can shape your choices long before it feels true." },
+        { type: "prompt", key: "c1", text: "Where did one of your three words show up this week?" }
       ]
     },
     {
       number: 2,
-      title: "The breath as an anchor",
-      art: "waves",
-      minutes: 7,
-      summary:
-        "Using the breath as a steady place to return to when the mind is busy or the day is loud.",
+      section: "A",
+      title: "Write your own pledge",
+      art: "path",
+      minutes: 4,
+      summary: "A few lines, in your own words, about how you intend to live and work.",
       blocks: [
-        { type: "lead", text: "Your breath is always with you and always in the present, which makes it the simplest place to come back to." },
-        { type: "p", text: "You don't need to breathe in a special way. Start by noticing the breath as it already is: cool air at the nostrils, the rise of the chest, the gentle movement of the belly." },
-        { type: "p", text: "When the mind wanders (and it will), notice where it went, then kindly guide your attention back to the next breath. Each return is like one repetition at the gym: small, and quietly strengthening." },
+        { type: "lead", text: "A pledge turns good intentions into a few lines you can hold yourself to." },
+        { type: "p", text: "Write it for yourself, not for anyone else. It should describe the personal culture you want to live by and give you something to check your decisions against, especially on a bad day." },
         {
           type: "practice",
-          title: "Try this · Counting breaths",
+          title: "Try this · Draft it in ten minutes",
           steps: [
-            "Sit comfortably and let your eyes close or soften.",
-            "Breathe in, then out, and count “one”.",
-            "Continue up to ten, then begin again at one.",
-            "If you lose count, smile at it and start again from one.",
-            "After a few rounds, let the counting go and simply breathe."
+            "Write down three values you won't trade away.",
+            "Turn each one into a sentence that starts with “I will…”.",
+            "Add two or three rules that keep you steady when things go wrong.",
+            "Finish with a couple of long-term goals.",
+            "Read it aloud once a week, and edit it whenever it stops sounding like you."
           ]
         },
-        {
-          type: "callout",
-          title: "Tip",
-          text: "A slightly longer out-breath often feels settling. Try breathing in for four and out for six.",
-          action: { label: "Open the breathing guide", href: "#practice" }
-        },
-        { type: "prompt", key: "c2", text: "What happens to your breath when you feel rushed? What changes when you slow it down?" }
+        { type: "prompt", key: "c2", text: "Write your pledge here." }
       ]
     },
     {
       number: 3,
-      title: "Coming home to the body",
-      art: "stones",
-      minutes: 8,
-      summary:
-        "Meeting physical sensations with curiosity, including a body scan for tension you didn't know you were holding.",
+      section: "A",
+      title: "Triggers and patterns",
+      art: "ripple",
+      minutes: 4,
+      summary: "Why the same event stresses you one day and not the next, and how to spot your patterns.",
       blocks: [
-        { type: "lead", text: "The body is often where stress shows up first: a tight jaw, raised shoulders, a fluttering stomach." },
-        { type: "p", text: "A body scan is a slow tour of attention from head to toe. You're not trying to relax each part, though that may happen. You're simply checking in: what is here? Warmth, pressure, tingling, numbness, nothing at all. Every answer is welcome." },
-        { type: "list", title: "Places tension likes to hide", items: ["Jaw and forehead", "Shoulders and neck", "Hands", "Belly"] },
+        { type: "lead", text: "One email can wreck your morning and leave a colleague completely unmoved." },
+        { type: "p", text: "Stress isn't only the event. It is the event plus how you read it in that moment, which is why triggers differ between people and can even differ for you from one week to the next." },
+        { type: "p", text: "A lot of lost balance comes from mental time travel: going back over what went wrong, or rehearsing what might. Once you can see which situations send you there, you can catch it earlier and come back to now." },
         {
           type: "practice",
-          title: "Try this · One-minute body check",
-          practiceId: "body-scan",
+          title: "Try this · Map one trigger",
+          practiceId: "trigger-pause",
           steps: [
-            "Notice where your body meets the chair or the floor.",
-            "Scan slowly from the top of your head down to your toes.",
-            "Wherever you find tightness, breathe into it for a moment.",
-            "Let it soften if it wants to, and let it be if it doesn't."
+            "Note the situation: where you were and who was there.",
+            "Name exactly what set you off.",
+            "Notice what happened in your body and your thoughts.",
+            "Write down what you did next.",
+            "Decide what you'd like to do next time."
           ]
         },
-        { type: "prompt", key: "c3", text: "Where in your body do you tend to hold stress? What does it feel like?" }
+        {
+          type: "callout",
+          title: "The theory",
+          text: "Stress is only one reason happiness can go missing. See how it differs from burnout, sadness and depression.",
+          action: { label: "Read more on Happiness at Work", href: "happiness-at-work.html#part-1" }
+        },
+        { type: "prompt", key: "c3", text: "Which situation has set you off most often lately? What do you notice just before it happens?" }
       ]
     },
+
+    /* ---------- Section B: Emotions ---------- */
     {
       number: 4,
-      title: "Working with thoughts",
-      art: "clouds",
-      minutes: 7,
-      summary:
-        "Learning to watch thoughts come and go without believing every one of them or pushing them away.",
+      section: "B",
+      title: "Your own definition of happiness",
+      art: "sunrise",
+      minutes: 3,
+      summary: "Find the moments when time disappeared, and work out what they have in common.",
       blocks: [
-        { type: "lead", text: "Thoughts are events in the mind, not facts, even the loud and convincing ones." },
-        { type: "p", text: "Many of us live inside our thinking: planning, worrying, judging, replaying. Mindfulness invites a small step back, so you can see a thought *as* a thought. From there, you get to choose how to respond." },
-        { type: "p", text: "One way to practise is labelling. When you notice a thought, give it a gentle name such as “planning”, “worrying” or “remembering”, then return to the breath." },
-        { type: "callout", title: "An image to try", text: "Picture each thought as a cloud drifting across a wide sky. You are the sky, not the weather." },
+        { type: "lead", text: "Happiness is easier to build once you know what yours looks like." },
+        { type: "p", text: "It's tempting to treat happiness as something that turns up by luck. This section treats it as something you make, step by step, starting with a definition that belongs to you." },
         {
           type: "practice",
-          title: "Try this · Label and let go",
+          title: "Try this · Find your moment",
           steps: [
-            "Sit for two minutes and rest your attention on the breath.",
-            "When a thought appears, label it silently.",
-            "Notice the space between thoughts, however brief.",
-            "Return to the breath as many times as you need."
+            "Close your eyes and remember a time you were so absorbed that the clock surprised you.",
+            "Where were you, what were you doing and who was with you?",
+            "Ask what made that moment feel the way it did.",
+            "Put it into a sentence or two."
           ]
         },
-        { type: "prompt", key: "c4", text: "Which thought visited you most often this week? How did it change when you simply noticed it?" }
+        { type: "prompt", key: "c4a", text: "What does happiness mean to you in your personal life?" },
+        { type: "prompt", key: "c4b", text: "What does happiness mean to you at work?" },
+        { type: "callout", title: "Then hold it lightly", text: "Once it's written down, stop hunting for it. Leave room in your week for those moments and let them arrive." }
       ]
     },
     {
       number: 5,
-      title: "Meeting emotions with kindness",
-      art: "horizon",
-      minutes: 8,
-      summary:
-        "Making room for difficult feelings, and offering yourself the warmth you would offer a friend.",
+      section: "B",
+      title: "What shapes your happiness",
+      art: "stones",
+      minutes: 3,
+      summary: "A quick rating of four areas of life, to repeat every two weeks.",
       blocks: [
-        { type: "lead", text: "Feelings rise and fall like weather. Mindfulness helps us stay with them long enough to understand them." },
-        { type: "p", text: "When a strong emotion arrives, the urge is often to push it away or get swept up in it. There is a third option: name it, notice where you feel it in the body, and breathe with it." },
+        { type: "lead", text: "A short check-in shows where life feels full and where it's running thin." },
         {
-          type: "list",
-          title: "Four gentle steps",
+          type: "rating",
+          key: "b-factors",
+          title: "Rate each area today",
+          hint: "A is very satisfied and D is not satisfied at all. Come back every two weeks and see what has moved.",
           items: [
-            "**Name it.** “This is frustration.” “This is sadness.”",
-            "**Feel it.** Where does it live in your body?",
-            "**Breathe with it.** Let the breath move around the feeling.",
-            "**Be kind to it.** What would you say to a friend who felt this way?"
+            { label: "Learning, growth and achievement", hint: "New skills, a shift in mindset, or finishing what you set out to do" },
+            { label: "Social life", hint: "The ordinary warmth you share with friends, colleagues and strangers" },
+            { label: "Close relationships", hint: "How connected you feel to your family and the people nearest you" },
+            { label: "Comforts and resources", hint: "Having what you need, from the essentials to your favourite comfort food" }
           ]
         },
-        { type: "callout", title: "Go gently", text: "If a feeling becomes overwhelming, open your eyes, feel your feet on the floor and return to ordinary breathing. You can always come back to it later." },
-        { type: "prompt", key: "c5", text: "What is one kind sentence you could offer yourself on a hard day?" }
+        { type: "prompt", key: "c5", text: "Which rating surprised you? What's one small change that could lift it?" }
       ]
     },
     {
       number: 6,
-      title: "Mindfulness in everyday life",
-      art: "leaf",
-      minutes: 6,
-      summary:
-        "Weaving small moments of presence into ordinary routines: meals, walks, conversations and screens.",
+      section: "B",
+      title: "Happy hormones",
+      art: "waves",
+      minutes: 4,
+      summary: "Small activities that can lift your mood, and a checklist to cover them all in a week.",
       blocks: [
-        { type: "lead", text: "The goal isn't more meditation. It's a little more presence in the life you already have." },
-        { type: "p", text: "Any routine can become a practice: the first sip of tea, the walk to the bus, washing your hands. Choose one activity and give it your full attention, noticing sights, sounds, textures and smells." },
-        { type: "list", title: "Small anchors for the day", items: ["One mindful breath before opening your phone", "Tasting the first three bites of each meal", "Listening to someone without planning your reply", "A short pause before you sleep"] },
+        { type: "lead", text: "What you do changes how you feel, sometimes faster than what you think." },
+        { type: "p", text: "In the Guru–shishya tradition, a teacher might set a student a task that seemed unrelated to the lesson, until the student was in the right frame of mind to learn. Modern physiology points the same way: activity affects mood." },
         {
-          type: "practice",
-          title: "Try this · The three-step pause",
-          practiceId: "pause",
-          steps: [
-            "**Arrive.** Notice what you're thinking and feeling.",
-            "**Gather.** Bring your attention to a few breaths.",
-            "**Widen.** Sense your whole body, then carry on with your day."
+          type: "checklist",
+          key: "b-hormones",
+          title: "Try to cover all four this week",
+          reset: "Start a new week",
+          groups: [
+            { title: "Dopamine", note: "reward and motivation", items: ["Choose instrumental music to suit your pace: slow when you're wound up, upbeat when you need momentum", "Break a job into very small tasks and tick them off"] },
+            { title: "Oxytocin", note: "trust and connection", items: ["Thank someone for something specific", "Check in on a colleague, or bring a joke to lunch"] },
+            { title: "Serotonin", note: "calm and contentment", items: ["Snack on nuts, seeds or fruit", "Take a short walk in daylight"] },
+            { title: "Endorphins", note: "relief and uplift", items: ["Do something playful with your hands: doodle, colour or solve a puzzle", "Do the stretches in Chapter 8"] }
           ]
         },
-        { type: "prompt", key: "c6", text: "Which everyday activity could you turn into a moment of mindfulness this week?" }
+        { type: "callout", title: "A simple model", text: "These labels are a friendly shorthand. Brain chemistry is far more complicated, and no checklist replaces proper care if a low mood stays with you." },
+        { type: "prompt", key: "c6", text: "Which of the four do you tend to miss? What could you do about it this week?" }
+      ]
+    },
+
+    /* ---------- Section C: Excellence ---------- */
+    {
+      number: 7,
+      section: "C",
+      title: "Psychological capital and affirmations",
+      art: "horizon",
+      minutes: 5,
+      summary: "Four inner resources you can grow on purpose, and words to keep them going.",
+      blocks: [
+        { type: "lead", text: "Money is one kind of capital. Your inner resources are another, and they grow when you invest in them." },
+        { type: "p", text: "Psychological capital is what helps you get past obstacles. It has four parts, easy to remember as HERO." },
+        {
+          type: "cards",
+          items: [
+            { title: "Hope", text: "Believing a better outcome is possible.", note: "**Grow it:** picture where you're headed, mark the milestones and celebrate small wins." },
+            { title: "Efficacy", text: "Trusting that you can do it.", note: "**Grow it:** train one skill at a time, ask for honest feedback and learn from someone you admire." },
+            { title: "Resilience", text: "Staying upright when life knocks you.", note: "**Grow it:** write down what past difficulties taught you, keep moving or meditating, and stay close to people you can talk to." },
+            { title: "Optimism", text: "Keeping a hopeful view when a negative one would be easier.", note: "**Grow it:** list what you're grateful for, ask what a failure taught you and let yourself laugh." }
+          ]
+        },
+        {
+          type: "callout",
+          title: "Why bother if you're fine?",
+          text: "Therapy helps when things have gone wrong. Habits like these are preventive: they make it less likely that things will.",
+          action: { label: "See the research behind it", href: "happiness-at-work.html#part-3" }
+        },
+        { type: "h3", text: "Affirmations" },
+        { type: "p", text: "An affirmation is a short, believable sentence you say when you need steadiness. The best ones are in your own words and tied to something you're actually doing." },
+        {
+          type: "list",
+          title: "A few to borrow",
+          items: ["I can take this one step at a time.", "Today's effort counts, even if nobody sees it.", "I've handled hard days before.", "I can pause before I respond."]
+        },
+        { type: "prompt", key: "c7a", text: "What three sentences would give you hope on a difficult morning?" },
+        { type: "prompt", key: "c7b", text: "Now write five more, based on the rules you live by." }
+      ]
+    },
+    {
+      number: 8,
+      section: "C",
+      title: "Yoga at your desk",
+      art: "leaf",
+      minutes: 4,
+      summary: "Five gentle movements to do every day, and the four pillars of a yogic life.",
+      blocks: [
+        { type: "lead", text: "Yoga is more than poses and breathing. It's also a way of resting and reconnecting with your body." },
+        {
+          type: "practice",
+          title: "Try this · The five daily basics",
+          practiceId: "desk-reset",
+          steps: [
+            "**Eyes.** Keep your head still and look up, down, right and left.",
+            "**Neck.** Lower your chin to your chest, then turn slowly to look over each shoulder.",
+            "**Spine.** Rest one forearm on the back of your chair and twist gently towards it. Change sides.",
+            "**Shoulders.** Put your fingertips on your collarbones, lift your elbows out to the sides and circle them slowly.",
+            "**Knees.** Sit back, lift one foot and circle your lower leg five times each way. Change legs."
+          ]
+        },
+        { type: "callout", title: "Go gently", text: "Move slowly and stop if anything hurts. If you have an injury or a medical condition, check with a doctor first." },
+        {
+          type: "list",
+          title: "The four pillars of a yogic lifestyle",
+          items: [
+            "**Aachar, how you behave.** Act with care and attention, towards others and yourself.",
+            "**Vichaar, how you think.** When a thought loop turns negative, steer it towards something useful.",
+            "**Aahaar, how you eat.** Keep portions modest, keep mealtimes regular and stop short of full.",
+            "**Vihaar, how you play.** Spend time on something so enjoyable that the hours slip by."
+          ]
+        },
+        { type: "prompt", key: "c8", text: "Which pillar needs the most attention from you right now?" }
+      ]
+    },
+    {
+      number: 9,
+      section: "C",
+      title: "Goals and priorities",
+      art: "quadrants",
+      minutes: 4,
+      summary: "Sort your day by what's urgent and what matters, then plan around it.",
+      blocks: [
+        { type: "lead", text: "Being busy and moving forward aren't the same thing." },
+        { type: "p", text: "Start the day by listing your tasks, then ask two questions of each: how urgent is it, and how important is it? The answers put it in one of four boxes, in a grid widely known as the Eisenhower Matrix." },
+        {
+          type: "matrix",
+          key: "c-plan",
+          title: "Today's priority planner",
+          cells: [
+            { key: "do", label: "Do first", hint: "Urgent and important" },
+            { key: "schedule", label: "Schedule", hint: "Important, not urgent" },
+            { key: "delegate", label: "Delegate", hint: "Urgent, less important" },
+            { key: "drop", label: "Drop", hint: "Neither urgent nor important" }
+          ]
+        },
+        { type: "p", text: "At the end of the day, look back. Did your time go where your goals are? If not, shift something tomorrow." },
+        {
+          type: "callout",
+          title: "Make your goals concrete",
+          text: "A clear goal is easier to prioritise than a vague wish.",
+          action: { label: "SMART goals explained", href: "happiness-at-work.html#part-3" }
+        },
+        { type: "prompt", key: "c9", text: "What keeps landing in your “urgent” box that shouldn't be there?" }
+      ]
+    },
+    {
+      number: 10,
+      section: "C",
+      title: "Handling conflict",
+      art: "bridge",
+      minutes: 4,
+      summary: "Five moves for working through disagreement, and a log of what works for you.",
+      blocks: [
+        { type: "lead", text: "Most conflict at work comes from misunderstanding or competing needs, and both can be worked with." },
+        {
+          type: "list",
+          title: "Five moves that help",
+          items: [
+            "**Collaborate.** Look for an outcome both sides can live with, instead of a winner.",
+            "**Acknowledge.** Show you understand why the other person wants what they want before you answer.",
+            "**Meet halfway.** Offer part of what's being asked now and agree on the rest.",
+            "**Talk it through.** A short conversation clears up what a long email thread can't.",
+            "**Prepare.** Before a difficult discussion, read up on the issue and the other viewpoints."
+          ]
+        },
+        {
+          type: "callout",
+          title: "Ground rules",
+          text: "If you still disagree, do it respectfully, and keep aiming for a result that works for both of you.",
+          action: { label: "How groups decide and resolve conflict", href: "happiness-at-work.html#part-4" }
+        },
+        { type: "prompt", key: "c10", text: "Log a conflict you handled well. What did you do that worked?" }
+      ]
+    },
+    {
+      number: 11,
+      section: "C",
+      title: "Social capital",
+      art: "network",
+      minutes: 4,
+      summary: "Seven qualities that build trust and goodwill around you.",
+      blocks: [
+        { type: "lead", text: "Economic capital is what you have. Social capital is the trust and goodwill between you and the people around you." },
+        { type: "p", text: "It grows through everyday behaviour. Try practising these seven at work." },
+        {
+          type: "list",
+          items: [
+            "**Empathy.** Ask what's going on before you decide what you think.",
+            "**Gratitude.** Tell someone exactly what their help made possible.",
+            "**Kindness.** Notice who's on the edge of the group and bring them in.",
+            "**Humour.** Use lightness to ease tension, never at someone's expense.",
+            "**Altruism.** Give time or know-how with nothing expected back.",
+            "**Humility.** Pass the credit along before you accept any.",
+            "**Compassion.** Quietly change something to ease another person's load."
+          ]
+        },
+        {
+          type: "callout",
+          title: "The theory",
+          text: "Researchers describe different kinds of social capital, and what each one gives you.",
+          action: { label: "Bonding, bridging and linking", href: "happiness-at-work.html#part-4" }
+        },
+        { type: "prompt", key: "c11", text: "Which of the seven comes easiest to you? Which one will you practise this week?" }
+      ]
+    },
+    {
+      number: 12,
+      section: "C",
+      title: "Journaling",
+      art: "pages",
+      minutes: 4,
+      summary: "What to track, why reading back matters, and a page for short breaks.",
+      blocks: [
+        { type: "lead", text: "A few lines a day can show you patterns you'd never spot otherwise." },
+        {
+          type: "list",
+          title: "Journals worth keeping",
+          items: [
+            "**Thoughts** that keep coming back",
+            "**Emotions**, and what set them off",
+            "**Food, mood and energy:** what you ate and how you felt afterwards",
+            "**Goals:** what you did that moved you closer",
+            "**Conflicts:** what you tried and how it went",
+            "**Tasks:** how you actually get things done"
+          ]
+        },
+        { type: "p", text: "The value comes from reading it back. Look for what repeats, then choose one small thing to change." },
+        {
+          type: "callout",
+          title: "Keep a page for short breaks",
+          text: "Fill it with things that give your mind a rest: a mandala to colour, a puzzle, a joke, a note to help you wind down.",
+          action: { label: "Open your journal", href: "#reflect" }
+        },
+        { type: "prompt", key: "c12", text: "Today: what did you eat, and how were your mood and energy afterwards?" }
       ]
     }
   ],
 
   /* Guided practices open in a full-screen player.
      Each step's seconds add up to the practice length.
-     Add an audio file (e.g. "audio/body-scan.mp3") to play a recording alongside. */
+     Add an audio file (e.g. "audio/desk-reset.mp3") to play a recording alongside. */
   practices: [
     {
       id: "one-minute",
-      title: "One mindful minute",
+      title: "Back to the present",
       duration: "1 min",
       when: "Any time",
-      art: "sunrise",
-      audio: "",
-      description: "A short reset for busy moments. Follow the circle and the words.",
-      steps: [
-        { text: "Find a comfortable position and let your shoulders soften.", seconds: 8 },
-        { text: "Notice the breath moving in… and out.", seconds: 10 },
-        { text: "Breathe in as the circle grows, out as it softens.", seconds: 12 },
-        { text: "If your mind wanders, gently come back to the next breath.", seconds: 12 },
-        { text: "Feel your whole body sitting here, breathing.", seconds: 10 },
-        { text: "One last slow breath. *Carry this calm with you.*", seconds: 8 }
-      ]
-    },
-    {
-      id: "body-scan",
-      title: "Five-minute body scan",
-      duration: "5 min",
-      when: "Midday",
-      art: "path",
-      audio: "",
-      description: "A slow sweep of attention from head to toe to release held tension.",
-      steps: [
-        { text: "Settle in. Let your eyes close, or rest your gaze on the floor.", seconds: 20 },
-        { text: "Bring attention to the top of your head and your forehead. Let them soften.", seconds: 30 },
-        { text: "Notice your jaw, mouth and throat. Unclench if you can.", seconds: 30 },
-        { text: "Move to your shoulders and arms, all the way to your fingertips.", seconds: 40 },
-        { text: "Feel your chest and belly rise and fall with each breath.", seconds: 40 },
-        { text: "Notice your back, from the shoulders down to the hips.", seconds: 40 },
-        { text: "Move through your legs, knees, ankles and feet.", seconds: 40 },
-        { text: "Now sense your whole body at once, *breathing*.", seconds: 40 },
-        { text: "When you're ready, wiggle your fingers and gently return.", seconds: 20 }
-      ]
-    },
-    {
-      id: "pause",
-      title: "Three-step pause",
-      duration: "3 min",
-      when: "Evening",
       art: "moon",
       audio: "",
-      description: "Arrive, gather and widen: a three-minute reset you can use anywhere.",
+      description: "For when your mind is stuck on what happened or what might. Follow the circle and the words.",
       steps: [
-        { text: "*Arrive.* Sit tall and notice what's here: thoughts, feelings, sensations.", seconds: 30 },
-        { text: "Let it all be as it is. Nothing to change.", seconds: 30 },
-        { text: "*Gather.* Narrow your attention to the breath in your belly.", seconds: 30 },
-        { text: "Stay with each in-breath and each out-breath.", seconds: 30 },
-        { text: "*Widen.* Expand your attention to your whole body, breathing.", seconds: 30 },
-        { text: "Carry this wider awareness into the rest of your evening.", seconds: 30 }
+        { text: "Stop for a moment and let your shoulders drop.", seconds: 8 },
+        { text: "Notice where your mind is: the past, or the future?", seconds: 10 },
+        { text: "Feel your feet on the floor. *This is where you are.*", seconds: 12 },
+        { text: "Follow one slow breath in, and one slow breath out.", seconds: 12 },
+        { text: "If a thought pulls you away, come back to the next breath.", seconds: 10 },
+        { text: "One more breath. *Carry on from here.*", seconds: 8 }
+      ]
+    },
+    {
+      id: "desk-reset",
+      title: "Five-stretch desk reset",
+      duration: "3 min",
+      when: "At your desk",
+      art: "leaf",
+      audio: "",
+      description: "The five daily basics for your eyes, neck, spine, shoulders and knees, paced for you.",
+      steps: [
+        { text: "Sit tall with both feet on the floor. Move slowly, and stop if anything hurts.", seconds: 12 },
+        { text: "*Eyes.* Keep your head still. Look up, down, right and left.", seconds: 20 },
+        { text: "*Neck.* Lower your chin towards your chest and feel the back of your neck lengthen.", seconds: 15 },
+        { text: "Turn your head slowly to look over your right shoulder, then your left.", seconds: 20 },
+        { text: "*Spine.* Rest your right forearm on the back of your chair and twist gently towards it.", seconds: 18 },
+        { text: "Come back to centre, then twist the other way.", seconds: 18 },
+        { text: "*Shoulders.* Fingertips on your collarbones, elbows out. Circle your elbows slowly.", seconds: 20 },
+        { text: "*Knees.* Lift your right foot and circle your lower leg five times each way.", seconds: 22 },
+        { text: "Now the left leg. Five circles each way.", seconds: 22 },
+        { text: "Rest your hands. Notice how your body feels now.", seconds: 13 }
+      ]
+    },
+    {
+      id: "trigger-pause",
+      title: "Pause before you react",
+      duration: "2 min",
+      when: "After a trigger",
+      art: "ripple",
+      audio: "",
+      description: "Something set you off. Use this before you reply, decide or walk away.",
+      steps: [
+        { text: "Something set you off. Stop here for a moment.", seconds: 15 },
+        { text: "Name it quietly: what happened, and what are you telling yourself about it?", seconds: 25 },
+        { text: "Find where it sits in your body: your jaw, chest or stomach.", seconds: 20 },
+        { text: "Let each breath out be a little longer than the breath in.", seconds: 25 },
+        { text: "Ask yourself what response you'd be glad of next week.", seconds: 20 },
+        { text: "*Choose your next step.* Then take it.", seconds: 15 }
       ]
     }
   ],
 
-  practiceOutro: "Well done. Notice how you feel now, *and carry it with you.*",
+  practiceOutro: "Well done. Notice how you feel now, *and take it with you.*",
 
   breathing: {
     patterns: [
@@ -285,43 +494,49 @@ window.HANDBOOK = {
     ]
   },
 
-  /* Extra journal prompts (chapter prompts are collected automatically). */
+  /* Extra journal prompts (chapter prompts are collected automatically).
+     t-give and t-receive also appear on the Happiness at Work page. */
   prompts: [
-    { key: "g1", label: "Everyday", text: "What did you notice today that you usually rush past?" },
-    { key: "g2", label: "Everyday", text: "What is one thing you're grateful for right now, however small?" }
+    { key: "g1", label: "Everyday", text: "What's one small thing you'd like to do differently tomorrow?" },
+    { key: "g2", label: "Everyday", text: "Who helped you today, and what did they do?" },
+    { key: "t-receive", label: "Happiness at Work", text: "Think of a time someone showed you empathy, gratitude, kindness, humour, altruism, humility or compassion. What did they do?" },
+    { key: "t-give", label: "Happiness at Work", text: "Now think of a time you showed one of them. What did it change?" }
   ],
 
   quote: {
-    text: "You don't have to quiet the mind. Only to *notice* it, kindly, and again.",
-    cite: "A note to return to"
+    text: "“Meant to be used with sincerity, sensitivity, and respect for individual journeys.”",
+    cite: "Dr Priyal Panchal, Author's Note"
   },
 
   author: {
-    name: "The Author",
-    role: "Writer & mindfulness facilitator",
+    name: "Dr Priyal Panchal",
+    role: "Author, Mindfulness Handbook",
     image: "", // e.g. "images/author.jpg"; leave empty to show the illustration
     note: [
-      "This handbook grew out of conversations with people who wanted something simple: a few minutes of calm they could actually fit into a crowded day.",
-      "Nothing here asks you to become someone else. It only asks you to notice, and to be a little kinder to yourself while you do."
+      "This handbook began with news reports of working professionals and young students losing their lives, and with the hope that better everyday mental health habits might help, even a little. World Mental Health Day 2025, with its focus on access to services, shaped where it went next.",
+      "It is a mental health management aid, grounded in positive psychology and bibliotherapy. The Embark Edition is the first of three, and an app version is being designed to reach more people."
     ]
   },
 
   disclaimer: {
     title: "Please read",
     text:
-      "This handbook offers general wellbeing practices. It is not a substitute for medical or psychological diagnosis, treatment or advice. If you are struggling with your mental health, please speak to a qualified professional. In an emergency, contact your local emergency services."
+      "This handbook supports everyday mental health management. It doesn't replace professional medical, psychological or psychiatric advice, diagnosis or treatment, and the author accepts no liability for how it is used. If you're struggling, please talk to a qualified professional. In India, Tele-MANAS offers free support on 14416, day and night. In an emergency, call 112.",
+    rights:
+      "Based on Mindfulness Handbook: Embark Edition © Dr Priyal Panchal, 2026. Please don't copy, adapt or redistribute this material without the author's written permission."
   },
 
+  /* The next-edition band. Add a link to `url` to switch the button on. */
   feedback: {
-    heading: "How did the handbook *feel*?",
-    text: "Your thoughts help shape the next edition. It takes about three minutes.",
-    label: "Share feedback",
-    pendingLabel: "Form coming soon",
-    url: "" // paste your form link here, e.g. "https://forms.gle/…"
+    heading: "Ready to go *deeper*?",
+    text: "The Embrace Edition is a workbook that builds on these activities, adding chair yoga, relaxation, body positivity, stress management, work-life balance, nutrition, bibliotherapy, group behaviour and leadership. The Enlighten Edition follows it.",
+    label: "Get the Embrace Edition",
+    pendingLabel: "Coming soon",
+    url: ""
   },
 
   footer: {
-    blurb: "A gentle web companion for building everyday mindfulness, one breath at a time.",
-    copyright: "" // leave empty to use "© {year} {author}. All rights reserved."
+    blurb: "Everyday tools for a steadier mind, at work and in life.",
+    copyright: "Based on Mindfulness Handbook: Embark Edition © Dr Priyal Panchal, 2026."
   }
 };

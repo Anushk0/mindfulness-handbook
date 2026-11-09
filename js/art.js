@@ -213,6 +213,99 @@
       );
     },
 
+    quadrants() {
+      const g = id("qd");
+      const pane = (x, y, fill, opacity, cls = "") =>
+        `<rect class="${cls}" x="${x}" y="${y}" width="128" height="148" rx="20" fill="${fill}" fill-opacity="${opacity}"/>`;
+      return svg(
+        `<defs>${lin(g, [[0, "#f7efe4"], [1, "#ecd9c4"]])}</defs>
+        <rect width="400" height="500" fill="url(#${g})"/>
+        ${pane(62, 96, "#b65a4f", 0.92, "a-pane")}${pane(210, 96, "#d4a55a", 0.72)}${pane(62, 254, "#9aa57a", 0.82)}${pane(210, 254, "#fffcf7", 0.8)}`,
+        "art--quadrants"
+      );
+    },
+
+    bridge() {
+      const g = id("br");
+      return svg(
+        `<defs>${lin(g, [[0, "#f3e6dc"], [1, "#e6cfc1"]])}</defs>
+        <rect width="400" height="500" fill="url(#${g})"/>
+        <circle class="a-sun" cx="200" cy="170" r="46" fill="#d4a55a" fill-opacity=".8"/>
+        <g fill="none" stroke-linecap="round" stroke-width="16">
+          <path class="a-span a-span--l" d="M34 392 Q 104 228 182 300" stroke="#a34a40"/>
+          <path class="a-span a-span--r" d="M366 392 Q 296 228 218 300" stroke="#6f7a4a"/>
+        </g>
+        <path d="M0 404 Q 100 384 200 404 T 400 400 V500 H0Z" fill="#c98c7b"/>
+        <path d="M0 448 Q 120 428 240 448 T 400 442 V500 H0Z" fill="#a34a40"/>`,
+        "art--bridge"
+      );
+    },
+
+    network() {
+      const g = id("nw");
+      const nodes = [
+        [200, 262, 18],
+        [108, 156, 11],
+        [302, 146, 13],
+        [326, 310, 10],
+        [254, 412, 12],
+        [104, 382, 13],
+        [62, 270, 8],
+        [204, 86, 8]
+      ];
+      const links = [
+        [0, 1],
+        [0, 2],
+        [0, 3],
+        [0, 4],
+        [0, 5],
+        [0, 6],
+        [1, 7],
+        [2, 7],
+        [3, 4],
+        [5, 6],
+        [4, 5]
+      ]
+        .map(([a, b]) => `<line x1="${nodes[a][0]}" y1="${nodes[a][1]}" x2="${nodes[b][0]}" y2="${nodes[b][1]}"/>`)
+        .join("");
+      const dots = nodes
+        .map(
+          ([x, y, r], i) =>
+            `<circle class="a-node" style="transform-origin:${x}px ${y}px" cx="${x}" cy="${y}" r="${r}" fill="${i ? "#f8ebe4" : "#d4a55a"}"/>`
+        )
+        .join("");
+      return svg(
+        `<defs>${lin(g, [[0, "#ad5246"], [1, "#6e3029"]])}</defs>
+        <rect width="400" height="500" fill="url(#${g})"/>
+        <g stroke="#f3dcd2" stroke-opacity=".5" stroke-width="1.6">${links}</g>
+        ${dots}`,
+        "art--network"
+      );
+    },
+
+    pages() {
+      const g = id("pg");
+      const lines = (x) =>
+        [0, 1, 2, 3, 4]
+          .map(
+            (i) =>
+              `<rect x="${x}" y="${238 + i * 26}" width="${(i % 2 ? 74 : 96)}" height="4" rx="2" fill="#b65a4f" fill-opacity=".35"/>`
+          )
+          .join("");
+      return svg(
+        `<defs>${lin(g, [[0, "#f1f2e8"], [1, "#d7ddc4"]])}</defs>
+        <rect width="400" height="500" fill="url(#${g})"/>
+        <circle cx="312" cy="112" r="34" fill="#fffcf7" fill-opacity=".75"/>
+        <ellipse cx="200" cy="436" rx="150" ry="10" fill="#6f7a4a" fill-opacity=".18"/>
+        <path d="M200 208 C 160 186 96 186 56 202 V 418 C 96 402 160 402 200 424 Z" fill="#fffcf7"/>
+        <path d="M200 208 C 240 186 304 186 344 202 V 418 C 304 402 240 402 200 424 Z" fill="#f8ebe4"/>
+        ${lines(84)}${lines(224)}
+        <path class="a-page" d="M200 208 C 236 192 286 190 330 200 V 412 C 286 402 236 404 200 424 Z" fill="#fffcf7" fill-opacity=".88" stroke="#e4d8c8"/>
+        <path d="M200 208 V 424" stroke="#c9b9a6" stroke-width="2"/>`,
+        "art--pages"
+      );
+    },
+
     welcome() {
       const g = id("wl");
       const sky = id("wls");

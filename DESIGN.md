@@ -72,15 +72,16 @@ The page scrolls as a sequence of "worlds", so the reader always knows they have
 1. **Dawn**: hero gradient with a rising sun and layered hills
 2. **Terracotta ticker**: a moving band of single words
 3. **Split**: deep terracotta art panel next to a blush text panel
-4. **Cream**: chapter overview with arch-framed art
+4. **Cream**: chapter overview, grouped by section, with arch-framed art
 5. **Paper**: the reader, where long-form text is set at its most readable
-6. **Dusk**: breathing guide and guided practices, dark and immersive
-7. **Cream**: journal
-8. **Terracotta split**: author's note
-9. **Blush**: feedback and disclaimer
-10. **Charcoal**: footer
+6. **Blush**: link to the Happiness at Work page
+7. **Dusk**: breathing guide and guided practices, dark and immersive
+8. **Cream**: journal
+9. **Terracotta split**: about the handbook
+10. **Blush**: next edition and disclaimer
+11. **Charcoal**: footer
 
-No two neighbouring bands share a surface.
+No two neighbouring bands share a surface. The Happiness at Work page runs dawn hero (compact), terracotta ticker, paper reader, blush link back, charcoal footer.
 
 ## Colour rules
 
@@ -105,7 +106,13 @@ No two neighbouring bands share a surface.
 | Eyebrow | 12px uppercase label in `terra-ink`, 1.1rem below. |
 | Ticker | 46px terracotta band, uppercase words separated by 4px dots, a 42s linear loop that pauses on hover. |
 | Breath button | 78px glass orb with three staggered pulse rings (3.9s). Hover fills it terracotta. Opens the 1-minute practice. |
-| Chapter card | Arch-framed generated art (4:5), meta eyebrow, uppercase terracotta title, 2-line summary and a pill. The whole card is one link. |
+| Chapter card | Arch-framed generated art (1:1), meta eyebrow, uppercase terracotta title, 2-line summary and a pill. The whole card is one link. On phones it becomes a compact row. |
+| Worksheet | Cream card with a serif-italic title. Pick-three chips, A to D ratings, a weekly checklist or a 2 x 2 planner. Answers autosave in the browser and are included in the download. |
+| Info card | Cream card with a serif-italic title and an optional "Build it" note below a hairline. |
+| Compare | Two side-by-side panels, cream and blush. Can hold expandable factors. |
+| Quiz | Dusk card of scenario questions with pill answers. Right and wrong are marked by text as well as colour. |
+| Part tabs | Sticky four-part pill bar on the Happiness at Work page. A swipeable chip row on phones. |
+| Topic | Heading sticks in a 300px left column while the content scrolls. Stacks on tablets and phones. |
 | Stat badge | Circle with an italic serif number and a tiny uppercase label. |
 | Reader | Sticky chapter rail (a chip row on mobile), progress bar, big italic numeral, prev/next pager. Arrow keys turn pages. |
 | Practice box | Cream card with numbered serif-italic step circles. Can open the guided player. |
@@ -136,7 +143,7 @@ Everything moves at breathing pace. Nothing snaps.
 | > 1080px | 3-up chapters, 4-column footer, 270px reader rail |
 | ≤ 1080px | 2-up chapters, 2-column footer |
 | ≤ 860px | Split sections stack, the rail becomes a sticky chip row, practice cards and journal go single-column, header is 60px |
-| ≤ 600px | 1-up chapters, pills may wrap, "Breathe" shrinks to a dot, single-column footer |
+| ≤ 600px | Chapter cards become compact rows, cards and worksheets go single-column, pills may wrap, "Breathe" shrinks to a dot, single-column footer |
 | ≤ 350px | Wordmark shows only the mark (the name stays for screen readers) |
 
 ## Do / Don't

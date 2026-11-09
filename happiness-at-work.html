@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Happiness at Work</title>
+  <meta name="description" content="The main theories of well-being, motivation and teamwork, explained in plain language.">
+  <meta name="theme-color" content="#f6f0e6">
+  <!-- Preview: keep it out of search results. Remove this line at launch. -->
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Jost:wght@300;400;500&display=swap">
+  <link rel="stylesheet" href="css/styles.css?v=2">
+  <script>
+    /* set before first paint: JS on, and calm mode from the OS setting or the footer switch */
+    (function () {
+      var d = document.documentElement, pref = null;
+      d.classList.add("js");
+      if (!d.lang) d.lang = "en";
+      try { pref = localStorage.getItem("mindfulness-handbook-motion"); } catch (e) {}
+      var osReduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (pref === "reduced" || (pref !== "full" && osReduce)) d.classList.add("reduce-motion");
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"><span data-progress></span></div>
+
+  <!-- ============ Header ============ -->
+  <header class="site-header" data-header>
+    <button class="icon-btn menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu" data-menu-toggle>
+      <span class="burger" aria-hidden="true"><span></span><span></span></span>
+    </button>
+    <a class="wordmark" href="index.html">
+      <svg class="wordmark__mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="3.2" fill="currentColor"/><circle cx="16" cy="16" r="8.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".7"/><circle cx="16" cy="16" r="14.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/></svg>
+      <span data-bind="meta.title">Mindfulness Handbook</span>
+    </a>
+    <button class="pill pill--sm header-breathe" type="button" data-open-practice="one-minute">
+      <span class="dot" aria-hidden="true"></span>Breathe
+    </button>
+  </header>
+
+  <!-- ============ Full-screen menu ============ -->
+  <nav id="site-menu" class="menu" aria-label="Site" data-menu inert>
+    <div class="menu__inner">
+      <ul class="menu__primary">
+        <li style="--i:0"><a href="index.html">The handbook</a></li>
+        <li style="--i:1"><a href="index.html#inside">Inside the handbook</a></li>
+        <li style="--i:2"><a href="index.html#practice">Practise</a></li>
+        <li style="--i:3"><a href="index.html#reflect">Your journal</a></li>
+        <li style="--i:4"><a href="#top">Happiness at Work</a></li>
+      </ul>
+      <div class="menu__side">
+        <p class="eyebrow">On this page</p>
+        <ol class="menu__chapters" data-menu-chapters></ol>
+        <button class="pill pill--solid" type="button" data-open-practice="one-minute">Take one mindful minute</button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <!-- ============ Hero ============ -->
+    <section class="hero hero--compact" id="top" aria-labelledby="hero-title" data-hero>
+      <div class="hero__sky" aria-hidden="true">
+        <span class="blob blob--1"></span><span class="blob blob--2"></span><span class="blob blob--3"></span>
+      </div>
+      <div class="hero__scene" data-hero-scene></div>
+      <div class="hero__content">
+        <p class="eyebrow hero__eyebrow intro" style="--d:.1s" data-bind="theories.hero.eyebrow">The ideas behind the handbook</p>
+        <h1 class="display hero__title" id="hero-title" data-hero-title>What helps people thrive at work?</h1>
+        <p class="hero__lead intro" style="--d:.7s" data-bind="theories.hero.lead"></p>
+      </div>
+    </section>
+
+    <!-- ============ Ticker ============ -->
+    <div class="ticker" aria-hidden="true"><div class="ticker__track" data-ticker></div></div>
+
+    <!-- ============ Parts, one at a time ============ -->
+    <section class="reader theory" id="read" aria-label="Theories" data-theories>
+      <div class="container">
+        <nav class="parts" aria-label="Parts of this page" data-parts></nav>
+        <div class="theory__stage" data-parts-anchor>
+          <article class="chapter" data-part-pane></article>
+          <nav class="pager" aria-label="Previous and next part" data-part-pager></nav>
+        </div>
+      </div>
+      <div class="print-chapters" data-print-chapters></div>
+    </section>
+
+    <!-- ============ Back to the handbook ============ -->
+    <section class="theory-band" aria-labelledby="theory-cta-title">
+      <div class="container theory-band__inner">
+        <div>
+          <p class="eyebrow" data-reveal>Put it to use</p>
+          <h2 class="h2" id="theory-cta-title" data-bind-rich="theories.cta.heading" data-reveal style="--i:1"></h2>
+          <p data-bind="theories.cta.text" data-reveal style="--i:2"></p>
+          <a class="pill pill--solid" href="index.html#chapter-1" data-reveal style="--i:3">Open the handbook <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+        <ul class="theory-band__list" data-reveal style="--i:2">
+          <li><a href="index.html#chapter-7"><span>07</span>Psychological capital</a></li>
+          <li><a href="index.html#chapter-9"><span>09</span>Goals and priorities</a></li>
+          <li><a href="index.html#chapter-10"><span>10</span>Handling conflict</a></li>
+          <li><a href="index.html#chapter-11"><span>11</span>Social capital</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ Footer ============ -->
+  <footer class="site-footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <a class="wordmark wordmark--light" href="index.html">
+          <svg class="wordmark__mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="3.2" fill="currentColor"/><circle cx="16" cy="16" r="8.5" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".7"/><circle cx="16" cy="16" r="14.2" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/></svg>
+          <span data-bind="meta.title">Mindfulness Handbook</span>
+        </a>
+        <p data-bind="footer.blurb"></p>
+      </div>
+      <nav aria-label="This page (footer)">
+        <p class="footer__title">Happiness at Work</p>
+        <ul class="footer__list" data-footer-chapters></ul>
+      </nav>
+      <nav aria-label="Handbook (footer)">
+        <p class="footer__title">Handbook</p>
+        <ul class="footer__list">
+          <li><a href="index.html#inside">Inside the handbook</a></li>
+          <li><a href="index.html#practice">Breathing guide</a></li>
+          <li><a href="index.html#practices">Guided practices</a></li>
+          <li><a href="index.html#reflect">Your journal</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="About (footer)">
+        <p class="footer__title">About</p>
+        <ul class="footer__list">
+          <li><a href="index.html#about">About the handbook</a></li>
+          <li><a href="index.html#feedback">What's next</a></li>
+          <li><a href="index.html#disclaimer-title">Disclaimer</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="container footer__bottom">
+      <p data-copyright></p>
+      <button class="motion-toggle" type="button" role="switch" aria-checked="true" data-motion-toggle>
+        <span class="motion-toggle__track" aria-hidden="true"><span></span></span>
+        <span>Animations</span>
+      </button>
+      <a class="icon-btn icon-btn--light" href="#top" aria-label="Back to top">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </footer>
+
+  <!-- ============ Guided practice player ============ -->
+  <div class="overlay" role="dialog" aria-modal="true" aria-labelledby="ov-title" data-overlay inert>
+    <div class="overlay__bg" aria-hidden="true"></div>
+    <div class="overlay__top">
+      <p class="eyebrow eyebrow--light" data-ov-meta></p>
+      <button class="icon-btn icon-btn--light" type="button" aria-label="Close practice" data-ov-close>
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="overlay__center">
+      <h2 class="overlay__title" id="ov-title" data-ov-title></h2>
+      <div class="ov-orb" aria-hidden="true">
+        <svg class="ov-ring" viewBox="0 0 120 120"><circle class="ov-ring__track" cx="60" cy="60" r="56"/><circle class="ov-ring__bar" cx="60" cy="60" r="56" data-ov-ring/></svg>
+        <span class="ov-orb__glow"></span>
+        <span class="ov-orb__core"></span>
+      </div>
+      <p class="overlay__step" data-ov-step aria-live="polite"></p>
+    </div>
+    <div class="overlay__controls">
+      <button class="pill pill--light" type="button" data-ov-toggle>Pause</button>
+      <button class="pill pill--ghost-light" type="button" data-ov-restart>Restart</button>
+      <span class="overlay__time" data-ov-time aria-label="Time remaining">0:00</span>
+    </div>
+  </div>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+  <script src="js/content.js?v=2"></script>
+  <script src="js/theories.js?v=2"></script>
+  <script src="js/art.js?v=2"></script>
+  <script src="js/app.js?v=2"></script>
+</body>
+</html>
