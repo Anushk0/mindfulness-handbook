@@ -526,13 +526,10 @@ window.HANDBOOK = {
       "Based on Mindfulness Handbook: Embark Edition © Dr Priyal Panchal, 2026. Please don't copy, adapt or redistribute this material without the author's written permission."
   },
 
-  /* The next-edition band. Add a link to `url` to switch the button on. */
+  /* The next-edition band. */
   feedback: {
     heading: "Ready to go *deeper*?",
-    text: "The Embrace Edition is a workbook that builds on these activities, adding chair yoga, relaxation, body positivity, stress management, work-life balance, nutrition, bibliotherapy, group behaviour and leadership. The Enlighten Edition follows it.",
-    label: "Get the Embrace Edition",
-    pendingLabel: "Coming soon",
-    url: ""
+    text: "The Embrace Edition is a workbook that builds on these activities, adding chair yoga, relaxation, body positivity, stress management, work-life balance, nutrition, bibliotherapy, group behaviour and leadership. The Enlighten Edition follows it."
   },
 
   footer: {

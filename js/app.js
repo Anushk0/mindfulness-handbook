@@ -501,20 +501,6 @@
     $("[data-author-media]").innerHTML = `<figure class="portrait grain has-art" data-reveal>${media}</figure>`;
   }
 
-  function renderFeedback() {
-    const link = $("[data-feedback-link]");
-    if (C.feedback.url) {
-      link.href = C.feedback.url;
-      link.target = "_blank";
-      link.rel = "noopener";
-      link.innerHTML = `${esc(C.feedback.label)} <span class="arrow" aria-hidden="true">↗</span>`;
-    } else {
-      link.removeAttribute("href");
-      link.setAttribute("aria-disabled", "true");
-      link.textContent = C.feedback.pendingLabel || "Coming soon";
-    }
-  }
-
   function renderFooter() {
     $("[data-copyright]").textContent =
       C.footer.copyright || `© ${C.meta.year} ${C.meta.author}. All rights reserved.`;
@@ -1475,7 +1461,6 @@
     renderPracticeCards();
     renderJournal();
     renderAbout();
-    renderFeedback();
     renderPrintChapters();
     hydrateNotes();
     setupJournalTabs();

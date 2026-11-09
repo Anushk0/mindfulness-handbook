@@ -31,13 +31,12 @@ The site is served by GitHub Pages from the `main` branch of [Anushk0/mindfulnes
 
 ## Edit the content
 
-The handbook page's text lives in **`js/content.js`**: sections, chapters, practices, prompts, the note about the author, the disclaimer, the next-edition link and the footer. The Happiness at Work page's text lives in **`js/theories.js`**.
+The handbook page's text lives in **`js/content.js`**: sections, chapters, practices, prompts, the note about the author, the disclaimer, the next-edition text and the footer. The Happiness at Work page's text lives in **`js/theories.js`**.
 
 - Chapters are lists of blocks (text, lists, cards, callouts, practices, prompts and worksheets). The types are documented at the top of each file.
 - Write `*word*` to get the italic serif accent and `**word**` for bold.
 - Every `prompt` and worksheet needs its own `key`. Answers are saved under that key in the visitor's browser.
 - A practice's step `seconds` add up to its length. Set `audio: "audio/your-file.mp3"` to play a recording during it.
-- Set `feedback.url` to a link to switch on the next-edition button.
 - Set `author.image` to a photo path to replace the illustration.
 
 **About the text:** the topics and activities follow *Mindfulness Handbook: Embark Edition* and the *Happiness at Work* course slides, both by Dr Priyal Panchal. The wording was written for this site, and the practice scenarios are new. The one direct quotation is the short credited line in `quote`. That handbook's notice says it may not be reproduced, adapted or turned into other versions without the author's prior written permission, so keep that permission on record.

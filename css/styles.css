@@ -1345,7 +1345,6 @@ body.menu-open .burger span:last-child { top: 4.25px; transform: rotate(-45deg);
   align-items: center;
 }
 .feedback__cta .h2 { margin-bottom: 1.2rem; }
-.feedback__cta .pill { margin-top: 2rem; }
 .disclaimer {
   padding: clamp(1.5rem, 3vw, 2.3rem);
   border: 1px solid var(--blush-2);
