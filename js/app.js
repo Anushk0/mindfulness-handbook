@@ -193,10 +193,12 @@
       .join("");
   }
 
-  function promptHTML(p, variant, i = 0) {
+  function promptHTML(p, variant, i = 0, total = 0) {
     const fieldId = `note-${variant}-${p.key}`;
     const card = variant === "journal";
-    return `<div class="prompt ${card ? "j-card" : "prompt--inline"}"${card ? ` data-reveal style="--i:${i % 2}"` : ""}>
+    return `<div class="prompt ${card ? "j-card" : "prompt--inline"}"${
+      card ? ` role="group" aria-roledescription="slide" aria-label="Question ${i + 1} of ${total}"` : ""
+    }>
       <p class="eyebrow">${esc(card ? p.label : "Reflect")}</p>
       <label class="prompt__q" for="${fieldId}">${rich(p.text)}</label>
       <textarea class="lined" id="${fieldId}" rows="4" data-journal-key="${esc(p.key)}" placeholder="Write freely…"></textarea>
@@ -445,52 +447,172 @@
 
   function renderJournal() {
     const prompts = allPrompts();
-    const groups = [...C.sections.map((s) => ({ id: s.id, label: s.title })), { id: "E", label: "Everyday" }].map((g) => ({
-      ...g,
-      prompts: prompts.filter((p) => p.group === g.id)
-    }));
+    const groups = [...C.sections.map((s) => ({ id: s.id, label: s.title })), { id: "E", label: "Everyday" }];
     const tabs = groups
       .map(
-        (g, i) =>
-          `<button type="button" role="tab" class="tab-pill tab-pill--ink" id="jt-${g.id}" aria-controls="jp-${g.id}" aria-selected="${i === 0}" tabindex="${
-            i === 0 ? 0 : -1
-          }">${esc(g.label)}<small>${g.prompts.length}</small></button>`
+        (g) =>
+          `<button type="button" class="tab-pill tab-pill--ink" data-deck-tab="${g.id}">${esc(g.label)}<small>${
+            prompts.filter((p) => p.group === g.id).length
+          }</small></button>`
       )
       .join("");
-    const panels = groups
-      .map(
-        (g, i) =>
-          `<div class="journal" role="tabpanel" id="jp-${g.id}" aria-labelledby="jt-${g.id}"${i === 0 ? "" : " hidden"}>${g.prompts
-            .map((p, j) => promptHTML(p, "journal", j))
-            .join("")}</div>`
-      )
+    const bars = prompts
+      .map((p, i) => `<span class="deck__bar${i && p.group !== prompts[i - 1].group ? " deck__bar--start" : ""}"></span>`)
       .join("");
-    $("[data-journal]").innerHTML = `<div class="journal-tabs" role="tablist" aria-label="Journal sections">${tabs}</div>${panels}`;
+    const arrow = (d) =>
+      `<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    $("[data-journal]").innerHTML = `
+      <div class="deck" role="group" aria-roledescription="carousel" aria-label="Reflection questions" data-reveal>
+        <div class="journal-tabs" role="group" aria-label="Jump to a section">${tabs}</div>
+        <div class="j-track" data-deck-track>${prompts.map((p, i) => promptHTML(p, "journal", i, prompts.length)).join("")}</div>
+        <div class="deck__nav">
+          <button type="button" class="icon-btn deck__btn" aria-label="Previous question" data-deck-prev>${arrow("M19 12H5M11 6l-6 6 6 6")}</button>
+          <div class="deck__progress">
+            <div class="deck__bars" aria-hidden="true">${bars}</div>
+            <p class="deck__count" aria-live="polite" data-deck-count></p>
+          </div>
+          <button type="button" class="icon-btn deck__btn" aria-label="Next question" data-deck-next>${arrow("M5 12h14M13 6l6 6-6 6")}</button>
+        </div>
+      </div>`;
   }
 
-  function setupJournalTabs() {
-    const list = $(".journal-tabs");
-    const tabs = $$("[role='tab']", list);
-    const select = (tab, focus) => {
-      tabs.forEach((t) => {
-        const on = t === tab;
-        t.setAttribute("aria-selected", String(on));
-        t.tabIndex = on ? 0 : -1;
-        $(`#${t.getAttribute("aria-controls")}`).hidden = !on;
-      });
-      if (focus) tab.focus();
-    };
-    list.addEventListener("click", (e) => {
-      const tab = e.target.closest("[role='tab']");
-      if (tab) select(tab);
+  /* ---------- reflection deck: one row of cards you swipe through ---------- */
+  const deck = { track: null, cards: [], prompts: [], index: 0, target: 0, movedAt: 0, pinned: null, pinTimer: 0 };
+
+  const deckOffset = (i) => deck.cards[i].offsetLeft - deck.cards[0].offsetLeft;
+  const deckPerView = () => Math.max(1, Math.round(deck.track.clientWidth / deckOffset(1)));
+  const deckLast = () => Math.max(0, deck.cards.length - deckPerView());
+
+  function deckIndex() {
+    const { track, cards } = deck;
+    if (track.scrollLeft >= track.scrollWidth - track.clientWidth - 2) return deckLast();
+    return Math.min(cards.length - 1, Math.round(track.scrollLeft / deckOffset(1)));
+  }
+
+  function updateDeck() {
+    if (!deck.track) return;
+    const { prompts } = deck;
+    const i = (deck.index = deckIndex());
+    const perView = deckPerView();
+    const isDone = (p) => !!(journal[p.key] || "").trim();
+
+    $$(".deck__bar").forEach((bar, j) => {
+      bar.classList.toggle("is-current", j >= i && j < i + perView);
+      bar.classList.toggle("is-done", isDone(prompts[j]));
     });
-    list.addEventListener("keydown", (e) => {
-      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+
+    const range = perView > 1 ? `${i + 1}–${Math.min(i + perView, prompts.length)}` : `${i + 1}`;
+    const text = `${range} of ${prompts.length} · ${prompts.filter(isDone).length} answered`;
+    const count = $("[data-deck-count]");
+    if (count.textContent !== text) count.textContent = text;
+
+    $("[data-deck-prev]").setAttribute("aria-disabled", String(i <= 0));
+    $("[data-deck-next]").setAttribute("aria-disabled", String(i >= deckLast()));
+
+    const group = deck.pinned || prompts[i].group;
+    $$("[data-deck-tab]").forEach((tab) => {
+      const on = tab.dataset.deckTab === group;
+      if (on === tab.hasAttribute("aria-current")) return;
+      if (on) {
+        tab.setAttribute("aria-current", "true");
+        const list = tab.parentElement;
+        if (list.scrollWidth > list.clientWidth) list.scrollLeft = tab.offsetLeft - list.offsetLeft - 16;
+      } else {
+        tab.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  function deckGo(i) {
+    deck.target = Math.min(deckLast(), Math.max(0, i));
+    deck.movedAt = Date.now();
+    deck.track.scrollTo({ left: deckOffset(deck.target), behavior: reduced() ? "auto" : "smooth" });
+  }
+
+  function deckStep(dir) {
+    // quick repeat presses build on where the last press was heading
+    const from = Date.now() - deck.movedAt < 450 ? deck.target : deck.index;
+    deckGo(from + dir * deckPerView());
+  }
+
+  // Touch and trackpads swipe natively. This adds click-and-drag for a mouse.
+  function setupDeckDrag(track) {
+    let start = null;
+    let dragged = false;
+
+    track.addEventListener("pointerdown", (e) => {
+      dragged = false;
+      if (e.pointerType !== "mouse" || e.button !== 0 || e.target.closest("textarea")) return;
+      start = { x: e.clientX, left: track.scrollLeft };
+    });
+    window.addEventListener("pointermove", (e) => {
+      if (!start) return;
+      const dx = e.clientX - start.x;
+      if (!dragged && Math.abs(dx) < 6) return;
+      if (!dragged) {
+        dragged = true;
+        track.classList.add("is-dragging");
+        window.getSelection()?.removeAllRanges();
+      }
+      track.scrollLeft = start.left - dx;
+    });
+    window.addEventListener("pointerup", () => {
+      if (!start) return;
+      const from = start.left;
+      start = null;
+      if (!dragged) return;
+      // settle on the next card in the direction of the drag
+      const pos = track.scrollLeft / deckOffset(1);
+      deckGo(track.scrollLeft > from ? Math.ceil(pos) : Math.floor(pos));
+      const release = () => track.classList.remove("is-dragging");
+      track.addEventListener("scrollend", release, { once: true });
+      setTimeout(release, 700);
+    });
+    // a drag shouldn't also count as a click on the question
+    track.addEventListener(
+      "click",
+      (e) => {
+        if (dragged) {
+          e.preventDefault();
+          e.stopPropagation();
+          dragged = false;
+        }
+      },
+      true
+    );
+  }
+
+  function setupDeck() {
+    const el = $(".deck");
+    deck.track = $("[data-deck-track]");
+    deck.cards = $$(".j-card", deck.track);
+    deck.prompts = allPrompts();
+
+    deck.track.addEventListener("scroll", updateDeck, { passive: true });
+    window.addEventListener("resize", updateDeck);
+    $("[data-deck-prev]").addEventListener("click", () => deckStep(-1));
+    $("[data-deck-next]").addEventListener("click", () => deckStep(1));
+    el.addEventListener("click", (e) => {
+      const tab = e.target.closest("[data-deck-tab]");
+      if (!tab) return;
+      // keep the chosen tab lit while the row slides past the sections in between
+      deck.pinned = tab.dataset.deckTab;
+      clearTimeout(deck.pinTimer);
+      deck.pinTimer = setTimeout(() => {
+        deck.pinned = null;
+        updateDeck();
+      }, 800);
+      deckGo(deck.prompts.findIndex((p) => p.group === deck.pinned));
+      updateDeck();
+    });
+    el.addEventListener("keydown", (e) => {
+      if ((e.key !== "ArrowRight" && e.key !== "ArrowLeft") || e.target.closest("textarea")) return;
       e.preventDefault();
-      const step = e.key === "ArrowRight" ? 1 : -1;
-      const now = tabs.findIndex((t) => t.getAttribute("aria-selected") === "true");
-      select(tabs[(now + step + tabs.length) % tabs.length], true);
+      e.stopPropagation();
+      deckStep(e.key === "ArrowRight" ? 1 : -1);
     });
+    setupDeckDrag(deck.track);
+    updateDeck();
   }
 
   function renderAbout() {
@@ -527,6 +649,7 @@
       });
       updateWorksheet(ws);
     });
+    updateDeck();
   }
 
   function updateWorksheet(ws) {
@@ -620,6 +743,7 @@
     if (!t) return;
     const key = t.dataset.journalKey;
     journal[key] = t.value;
+    updateDeck();
     $$("textarea[data-journal-key]").forEach((other) => {
       if (other !== t && other.dataset.journalKey === key) other.value = t.value;
     });
@@ -1463,7 +1587,7 @@
     renderAbout();
     renderPrintChapters();
     hydrateNotes();
-    setupJournalTabs();
+    setupDeck();
     setupReader();
     setupPacer();
     setupJournalActions();

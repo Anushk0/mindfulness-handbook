@@ -118,6 +118,7 @@ No two neighbouring bands share a surface. The Happiness at Work page runs dawn 
 | Practice box | Cream card with numbered serif-italic step circles. Can open the guided player. |
 | Callout | Blush card with an eyebrow title and an optional text link. |
 | Prompt | Serif-italic question with a lined-paper textarea. Notes autosave in the browser and sync between the chapter and the journal. |
+| Reflection deck | All journal questions in one swipeable row. Two cards on desktop, one with the next peeking in on phones. Swipe, drag, use the arrows or jump by section. Segmented bars show position and which questions are answered. |
 | Breathing guide | Orb that scales from 0.55 to 1 using the `breath` easing, timed to the phase. Rhythms: Calm 4·6, Box 4·4·4·4, Unwind 4·7·8. |
 | Practice card | Full-bleed art, dark bottom scrim, uppercase white title and a light pill. Three across, edge to edge. |
 | Guided player | Full-screen dusk dialog with a breathing orb, progress ring, timed step text, pause/resume/restart and optional audio. Focus is trapped inside and Esc closes it. |

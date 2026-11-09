@@ -106,6 +106,8 @@ body::before {
   pointer-events: none;
 }
 
+[hidden] { display: none !important; } /* so the hidden attribute always beats a component's own display */
+
 img, svg { display: block; max-width: 100%; }
 p { margin: 0; }
 p + p { margin-top: 1.1em; }
@@ -1260,27 +1262,57 @@ body.menu-open .burger span:last-child { top: 4.25px; transform: rotate(-45deg);
 
 /* ---------- 14. Journal ---------- */
 .reflect { padding: var(--section-pad) 0; background: var(--cream); }
-.journal {
+/* every reflection sits in one row: swipe, drag or use the arrows */
+.j-track {
+  --deck-gap: clamp(14px, 2vw, 22px);
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(16px, 2.4vw, 28px);
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - var(--deck-gap)) / 2);
+  gap: var(--deck-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
 }
+.j-track::-webkit-scrollbar { display: none; }
+@media (hover: hover) { .j-track { cursor: grab; } }
+.j-track.is-dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
 .j-card {
-  padding: clamp(1.4rem, 2.6vw, 2.1rem);
+  min-width: 0;
+  padding: clamp(1.25rem, 2.4vw, 1.9rem);
   border: 1px solid var(--line);
   border-radius: var(--r-card);
   background: var(--paper);
-  transition: box-shadow .6s var(--ease), transform .6s var(--ease), opacity 1s var(--ease), filter 1s var(--ease);
+  scroll-snap-align: start;
+  transition: border-color .4s var(--ease);
 }
-.j-card:focus-within { box-shadow: var(--shadow-soft); transform: translateY(-3px); }
-.j-card .lined { min-height: 7.5rem; }
+.j-card:focus-within { border-color: var(--rose); }
+.j-card .lined { flex: 1; min-height: 7.5rem; cursor: text; }
+
+.deck__nav {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(12px, 2.5vw, 24px);
+  margin-top: clamp(14px, 2vw, 22px);
+}
+.deck__btn { border-color: var(--line); background: var(--paper); }
+.deck__btn[aria-disabled="true"],
+.deck__btn[aria-disabled="true"]:hover { border-color: var(--line); background: var(--paper); opacity: .4; cursor: default; }
+.deck__bars { display: flex; gap: 3px; }
+.deck__bar { flex: 1; height: 4px; border-radius: 2px; background: var(--line); transition: background-color .35s var(--ease); }
+.deck__bar--start { margin-left: 7px; }
+.deck__bar.is-done { background: var(--rose); }
+.deck__bar.is-current { background: var(--terracotta); }
+.deck__count { margin-top: .45rem; color: var(--muted); font-size: .8rem; font-variant-numeric: tabular-nums; text-align: center; }
+
 .journal__actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 12px;
-  margin-top: clamp(36px, 5vw, 56px);
+  margin-top: clamp(20px, 3vw, 32px);
 }
 
 /* ---------- 15. About ---------- */
@@ -1487,10 +1519,6 @@ body.menu-open .burger span:last-child { top: 4.25px; transform: rotate(-45deg);
   transition-delay: calc(var(--i, 0) * 90ms);
 }
 .js [data-reveal].is-in { opacity: 1; transform: none; filter: none; }
-.js .j-card[data-reveal] {
-  transition: opacity 1.1s var(--ease), transform .6s var(--ease), filter 1.1s var(--ease), box-shadow .6s var(--ease);
-}
-.js .j-card[data-reveal].is-in:focus-within { transform: translateY(-3px); }
 
 /* ---------- 24. Handbook sections ---------- */
 .ch-group + .ch-group { margin-top: clamp(64px, 8vw, 112px); }
@@ -1508,11 +1536,11 @@ body.menu-open .burger span:last-child { top: 4.25px; transform: rotate(-45deg);
   flex-wrap: wrap;
   justify-content: center;
   gap: .5rem;
-  margin-bottom: clamp(24px, 3.5vw, 40px);
+  margin-bottom: clamp(16px, 2.4vw, 24px);
 }
 .tab-pill--ink { border-color: var(--line); background: var(--paper); color: var(--ink-soft); }
 .tab-pill--ink:hover { border-color: var(--rose); color: var(--ink); }
-.tab-pill--ink[aria-selected="true"] { border-color: var(--terracotta); background: var(--terracotta); color: #fff; }
+.tab-pill--ink[aria-current="true"] { border-color: var(--terracotta); background: var(--terracotta); color: #fff; }
 
 .disclaimer__rights {
   margin-top: 1em;
@@ -1926,7 +1954,14 @@ body.menu-open .burger span:last-child { top: 4.25px; transform: rotate(-45deg);
   .practice-cards { grid-template-columns: 1fr; }
   .p-card { min-height: 400px; }
 
-  .journal { grid-template-columns: 1fr; }
+  /* one card at a time, with the next one peeking in so it's clear you can swipe */
+  .j-track {
+    --deck-gap: 12px;
+    grid-auto-columns: calc(100% - 28px);
+    margin-inline: calc(-1 * var(--page-pad));
+    padding-inline: var(--page-pad);
+    scroll-padding-inline: var(--page-pad);
+  }
   .theory-band__inner { grid-template-columns: minmax(0, 1fr); }
 
   /* Happiness at Work: part tabs become a swipeable row, topics stack */
@@ -2007,6 +2042,17 @@ body.menu-open .burger span:last-child { top: 4.25px; transform: rotate(-45deg);
   .ch-card__title { margin-top: .25rem; font-size: .86rem; letter-spacing: .1em; }
   .ch-card__summary { max-width: none; margin: .35rem 0 0; font-size: .9rem; line-height: 1.5; }
   .ch-card .pill { display: none; }
+  .journal-tabs {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    margin-inline: calc(-1 * var(--page-pad));
+    padding-inline: var(--page-pad);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .journal-tabs::-webkit-scrollbar { display: none; }
+  .journal-tabs .tab-pill { flex-shrink: 0; padding-inline: 1em; }
+  .journal-tabs small { display: none; }
   .ws-rate { grid-template-columns: minmax(0, 1fr); }
   .matrix, .cards, .cards--3, .compare { grid-template-columns: minmax(0, 1fr); }
   .stats { gap: 10px; }
@@ -2123,8 +2169,9 @@ html.reduce-motion .ov-orb__core {
   .site-header, .menu, .progress, .skip-link, .hero, .ticker, .welcome__media, .inside,
   .practice, .about__media, .feedback, .site-footer, .overlay, .toast, .theory-band,
   .reader__layout, .journal__actions, .welcome__body .pill, .parts, .theory__stage,
-  .journal-tabs { display: none !important; }
-  .journal[hidden] { display: grid !important; }
+  .journal-tabs, .deck__nav { display: none !important; }
+  .j-track { display: block; margin: 0; padding: 0; overflow: visible; }
+  .j-card { margin-bottom: .4cm; }
   .topic { display: block; }
   .topic__head { position: static; margin-bottom: .4cm; }
   .info-card, .compare__col { background: none; break-inside: avoid; }
