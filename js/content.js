@@ -534,6 +534,7 @@ window.HANDBOOK = {
 
   footer: {
     blurb: "Everyday tools for a steadier mind, at work and in life.",
-    copyright: "Based on Mindfulness Handbook: Embark Edition © Dr Priyal Panchal, 2026."
+    copyright: "Based on Mindfulness Handbook: Embark Edition © Dr Priyal Panchal, 2026.",
+    credit: "Website designed and built by **Anushk Agrawal**"
   }
 };

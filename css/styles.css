@@ -1421,6 +1421,10 @@ body.menu-open .burger span:last-child { top: 4.25px; transform: rotate(-45deg);
   font-size: .82rem;
 }
 
+.footer__credits { min-width: 0; }
+.footer__credits p + p { margin-top: .25rem; }
+.footer__credits strong { color: #fff; font-weight: 500; }
+
 /* ---------- 18. Guided practice overlay ---------- */
 .overlay {
   position: fixed;
