@@ -548,7 +548,7 @@ window.HANDBOOK = {
     name: "Anushk Agrawal",
     role: "Designer and developer",
     bio: [
-      "Anushk designed and built this website, turning the Embark Edition flipbook into something to use as well as read: chapters at your own pace, guided practices, worksheets and a private journal that stays on your device."
+      "Anushk Agrawal is an engineer from NMIMS Mukesh Patel School of Technology Management & Engineering. Anushk designed and developed this website, bringing the Embark Edition handbook online as a space for reading, reflection and practice."
     ]
   },
 
