@@ -283,7 +283,7 @@ window.HANDBOOK = {
             { text: "**Eyes.** Keep your head still and look up, down, right and left.", audio: "eyes" },
             { text: "**Neck.** Lower your chin to your chest, then turn slowly to look over each shoulder.", audio: "neck" },
             { text: "**Spine.** Rest one forearm on the back of your chair and twist gently towards it. Change sides.", audio: "spine" },
-            { text: "**Shoulders.** Put your fingertips on your collarbones, lift your elbows out to the sides and circle them slowly.", audio: "shoulders" },
+            { text: "**Hands.** Put your fingertips on your collarbones, lift your elbows out to the sides and circle them slowly.", audio: "hands" },
             { text: "**Knees.** Sit back, lift one foot and circle your lower leg five times each way. Change legs.", audio: "knees" }
           ]
         },
@@ -428,13 +428,14 @@ window.HANDBOOK = {
   /* Chair yoga recordings, one for each of the five daily basics.
      Put the files in the audio/ folder and add each path here, for example
      "audio/chair-yoga-eyes.mp3". Until a stretch has a file, it shows no Listen
-     button and the guided practice runs without that sound. */
+     button and the guided practice runs without that sound. These are the
+     handbook's recordings, cleaned up (clicks removed, clearer tone, even level). */
   recordings: {
-    eyes: "",
-    neck: "",
-    spine: "",
-    shoulders: "",
-    knees: ""
+    eyes: "audio/chair-yoga-eyes.mp3",     // 0:21
+    neck: "audio/chair-yoga-neck.mp3",     // 0:31
+    spine: "audio/chair-yoga-spine.mp3",   // 0:26
+    hands: "audio/chair-yoga-hands.mp3",   // 0:29
+    knees: ""                              // no recording yet
   },
 
   /* Guided practices open in a full-screen player.
@@ -468,15 +469,16 @@ window.HANDBOOK = {
       when: "At your desk",
       art: "leaf",
       audio: "",
-      description: "The five daily basics for your eyes, neck, spine, shoulders and knees, paced for you.",
+      description: "The five daily basics for your eyes, neck, spine, hands and knees, paced for you.",
+      // each stretch with a recording lasts a little longer than its clip
       steps: [
         { text: "Sit tall with both feet on the floor. Move slowly, and stop if anything hurts.", seconds: 12 },
-        { text: "*Eyes.* Keep your head still. Look up, down, right and left.", seconds: 20, audio: "eyes" },
+        { text: "*Eyes.* Keep your head still. Look up, down, right and left.", seconds: 22, audio: "eyes" },
         { text: "*Neck.* Lower your chin towards your chest and feel the back of your neck lengthen.", seconds: 15, audio: "neck" },
-        { text: "Turn your head slowly to look over your right shoulder, then your left.", seconds: 20 },
-        { text: "*Spine.* Rest your right forearm on the back of your chair and twist gently towards it.", seconds: 18, audio: "spine" },
-        { text: "Come back to centre, then twist the other way.", seconds: 18 },
-        { text: "*Shoulders.* Fingertips on your collarbones, elbows out. Circle your elbows slowly.", seconds: 20, audio: "shoulders" },
+        { text: "Turn your head slowly to look over your right shoulder, then your left.", seconds: 18 },
+        { text: "*Spine.* Rest your right forearm on the back of your chair and twist gently towards it.", seconds: 14, audio: "spine" },
+        { text: "Come back to centre, then twist the other way.", seconds: 14 },
+        { text: "*Hands.* Fingertips on your collarbones, elbows out. Circle your elbows slowly.", seconds: 30, audio: "hands" },
         { text: "*Knees.* Lift your right foot and circle your lower leg five times each way.", seconds: 22, audio: "knees" },
         { text: "Now the left leg. Five circles each way.", seconds: 22 },
         { text: "Rest your hands. Notice how your body feels now.", seconds: 13 }
