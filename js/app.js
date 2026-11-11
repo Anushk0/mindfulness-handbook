@@ -42,8 +42,10 @@
     const s = Math.max(0, Math.ceil(sec));
     return `${Math.floor(s / 60)}:${pad2(s % 60)}`;
   };
+  // the file for a recording named in content.js, or "" if it hasn't been added yet
+  const recording = (key) => (key && C.recordings?.[key]) || "";
 
-  const chapters = [...C.chapters].sort((a, b) => a.number - b.number);
+  const chapters =[...C.chapters].sort((a, b) => a.number - b.number);
   const byNum = (n) => chapters.find((c) => c.number === n);
   const sectionOf = (ch) => C.sections.find((s) => s.id === ch.section);
   const inSection = (sec) => chapters.filter((c) => c.section === sec.id);
@@ -329,6 +331,14 @@
     </div>`;
   }
 
+  function listenHTML(key) {
+    const src = recording(key);
+    if (!src) return "";
+    return `<button type="button" class="pill pill--sm listen" data-listen="${esc(src)}" aria-pressed="false" aria-label="Listen to the ${esc(key)} recording">
+      <span class="listen__icon" aria-hidden="true"></span><span data-listen-label>Listen</span>
+    </button>`;
+  }
+
   function blockHTML(b, forPrint = false) {
     switch (b.type) {
       case "lead":
@@ -345,7 +355,7 @@
         }</aside>`;
       case "practice":
         return `<div class="practice-box"><p class="eyebrow">${esc(b.title)}</p><ol>${b.steps
-          .map((s) => `<li>${rich(s)}</li>`)
+          .map((s) => `<li>${rich(s.text || s)}${forPrint ? "" : listenHTML(s.audio)}</li>`)
           .join("")}</ol>${
           b.practiceId
             ? `<button type="button" class="pill pill--sm" data-open-practice="${esc(b.practiceId)}">Open the guided version</button>`
@@ -623,6 +633,16 @@
     $("[data-author-media]").innerHTML = `<figure class="portrait grain has-art" data-reveal>${media}</figure>`;
   }
 
+  function renderPeople() {
+    const card = (label, p, i) => `<article class="person" data-reveal style="--i:${i}">
+        <p class="eyebrow">${esc(label)}</p>
+        <h3 class="person__name">${esc(p.name)}</h3>
+        <p class="person__role">${esc(p.role)}</p>
+        <div class="person__bio">${p.bio.map((t) => `<p>${rich(t)}</p>`).join("")}</div>
+      </article>`;
+    $("[data-people]").innerHTML = card(C.people.authorLabel, C.author, 1) + card(C.people.builderLabel, C.builder, 2);
+  }
+
   function renderFooter() {
     $("[data-copyright]").textContent =
       C.footer.copyright || `© ${C.meta.year} ${C.meta.author}. All rights reserved.`;
@@ -867,6 +887,7 @@
       if (scroll) scrollToEl($("[data-reader-layout]"));
       return;
     }
+    stopListen();
     const dir = n > current ? "next" : "prev";
     const old = pane.firstElementChild;
     const motion = animate && !reduced();
@@ -1054,6 +1075,8 @@
      GUIDED PRACTICE PLAYER
      ========================================================================== */
   const CIRC = 2 * Math.PI * 56;
+  // a moment of silence, played from the visitor's tap so phones allow the recordings that follow
+  const SILENCE = `data:audio/wav;base64,UklGRsQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YaAAAACA${"gICA".repeat(53)}`;
   const ov = {
     el: $("[data-overlay]"),
     practice: null,
@@ -1100,6 +1123,11 @@
     if (idx !== ov.step) {
       ov.step = idx;
       setStepText(rich(ov.practice.steps[idx].text));
+      const src = recording(ov.practice.steps[idx].audio);
+      if (src && ov.audio) {
+        ov.audio.src = src;
+        ov.audio.play().catch(() => {});
+      }
     }
     $("[data-ov-ring]").style.strokeDashoffset = String(CIRC * (1 - ov.elapsed / ov.total));
     $("[data-ov-time]").textContent = fmtTime(ov.total - ov.elapsed);
@@ -1120,7 +1148,7 @@
     ov.last = performance.now();
     cancelAnimationFrame(ov.raf);
     ov.raf = requestAnimationFrame(ovFrame);
-    if (ov.audio) ov.audio.play().catch(() => {});
+    if (ov.audio && !ov.audio.ended) ov.audio.play().catch(() => {});
   }
 
   function ovPause() {
@@ -1135,6 +1163,7 @@
     ov.running = false;
     ov.done = true;
     ov.el.classList.add("is-paused");
+    if (ov.audio) ov.audio.pause();
     setStepText(rich(C.practiceOutro || "Well done."));
     $("[data-ov-toggle]").textContent = "Begin again";
     $("[data-ov-time]").textContent = "0:00";
@@ -1144,7 +1173,10 @@
     ov.elapsed = 0;
     ov.step = -1;
     $("[data-ov-ring]").style.strokeDashoffset = String(CIRC);
-    if (ov.audio) ov.audio.currentTime = 0;
+    if (ov.audio) {
+      if (ov.practice.audio) ov.audio.currentTime = 0;
+      else ov.audio.src = SILENCE; // the steps start their own recordings again
+    }
     ovPlay();
   }
 
@@ -1153,6 +1185,7 @@
     if (!p) return;
     if (document.body.classList.contains("menu-open")) closeMenu(false);
     pacerStop();
+    stopListen();
     ov.practice = p;
     ov.total = p.steps.reduce((sum, s) => sum + s.seconds, 0);
     ov.elapsed = 0;
@@ -1163,7 +1196,9 @@
     $("[data-ov-step]").innerHTML = "";
     $("[data-ov-time]").textContent = fmtTime(ov.total);
     $("[data-ov-ring]").style.strokeDashoffset = String(CIRC);
-    ov.audio = p.audio ? new Audio(p.audio) : null;
+    const stepped = !p.audio && p.steps.some((s) => recording(s.audio));
+    ov.audio = p.audio ? new Audio(p.audio) : stepped ? new Audio(SILENCE) : null;
+    if (stepped) ov.audio.play().catch(() => {});
 
     ov.el.inert = false;
     ov.el.classList.add("is-open");
@@ -1210,6 +1245,50 @@
         first.focus();
       }
     });
+  }
+
+  /* ==========================================================================
+     LISTEN BUTTONS (one recording at a time, stopped when the reader moves on)
+     ========================================================================== */
+  const listen = { audio: null, btn: null };
+
+  function stopListen() {
+    const { audio, btn } = listen;
+    if (!audio) return;
+    listen.audio = listen.btn = null;
+    audio.pause();
+    btn.classList.remove("is-playing");
+    btn.setAttribute("aria-pressed", "false");
+    $("[data-listen-label]", btn).textContent = "Listen";
+  }
+
+  function toggleListen(btn) {
+    if (listen.btn === btn) {
+      if (listen.audio.paused) listen.audio.play().catch(() => {});
+      else listen.audio.pause();
+      return;
+    }
+    stopListen();
+    const audio = new Audio(btn.dataset.listen);
+    listen.audio = audio;
+    listen.btn = btn;
+    const show = () => {
+      if (listen.audio !== audio) return;
+      const left = audio.duration ? ` · ${fmtTime(audio.duration - audio.currentTime)}` : "";
+      btn.classList.toggle("is-playing", !audio.paused);
+      btn.setAttribute("aria-pressed", String(!audio.paused));
+      $("[data-listen-label]", btn).textContent = `${audio.paused ? "Resume" : "Pause"}${left}`;
+    };
+    ["play", "pause", "timeupdate", "durationchange"].forEach((type) => audio.addEventListener(type, show));
+    audio.addEventListener("ended", () => {
+      if (listen.audio === audio) stopListen();
+    });
+    audio.addEventListener("error", () => {
+      if (listen.audio !== audio) return;
+      stopListen();
+      toast("This recording couldn't be loaded");
+    });
+    audio.play().catch(() => {});
   }
 
   /* ==========================================================================
@@ -1512,6 +1591,11 @@
         openPractice(practiceBtn.dataset.openPractice);
         return;
       }
+      const listenBtn = e.target.closest("[data-listen]");
+      if (listenBtn) {
+        toggleListen(listenBtn);
+        return;
+      }
       const quizOpt = e.target.closest(".quiz__opt");
       if (quizOpt) {
         answerQuiz(quizOpt);
@@ -1585,6 +1669,7 @@
     renderPracticeCards();
     renderJournal();
     renderAbout();
+    renderPeople();
     renderPrintChapters();
     hydrateNotes();
     setupDeck();

@@ -37,9 +37,10 @@ The handbook page's text lives in **`js/content.js`**: sections, chapters, pract
 - Write `*word*` to get the italic serif accent and `**word**` for bold.
 - Every `prompt` and worksheet needs its own `key`. Answers are saved under that key in the visitor's browser.
 - A practice's step `seconds` add up to its length. Set `audio: "audio/your-file.mp3"` to play a recording during it.
+- The chair yoga recordings are listed once under `recordings`. Add each file's path there and its stretch gets a Listen button, and the guided desk reset plays it when that stretch begins. Make the steps a recording covers at least as long as the recording.
 - Set `author.image` to a photo path to replace the illustration.
 
-**About the text:** the topics and activities follow *Mindfulness Handbook: Embark Edition* and the *Happiness at Work* course slides, both by Dr Priyal Panchal. The wording was written for this site, and the practice scenarios are new. The one direct quotation is the short credited line in `quote`. That handbook's notice says it may not be reproduced, adapted or turned into other versions without the author's prior written permission, so keep that permission on record.
+**About the text:** the topics and activities follow *Mindfulness Handbook: Embark Edition* and the *Happiness at Work* course slides, both by Dr Priyal Panchal. The wording was written for this site, and the practice scenarios are new. The one direct quotation is the short credited line in `quote`, and the author's bio note in `author.bio` is used as supplied. That handbook's notice says it may not be reproduced, adapted or turned into other versions without the author's prior written permission, so keep that permission on record.
 
 ## Files
 

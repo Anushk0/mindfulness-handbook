@@ -78,8 +78,9 @@ The page scrolls as a sequence of "worlds", so the reader always knows they have
 7. **Dusk**: breathing guide and guided practices, dark and immersive
 8. **Cream**: journal
 9. **Terracotta split**: about the handbook
-10. **Blush**: next edition and disclaimer
-11. **Charcoal**: footer
+10. **Cream**: bio notes for the author and the website's builder
+11. **Blush**: next edition and disclaimer
+12. **Charcoal**: footer
 
 No two neighbouring bands share a surface. The Happiness at Work page runs dawn hero (compact), terracotta ticker, paper reader, blush link back, charcoal footer.
 
@@ -113,9 +114,11 @@ No two neighbouring bands share a surface. The Happiness at Work page runs dawn 
 | Quiz | Dusk card of scenario questions with pill answers. Right and wrong are marked by text as well as colour. |
 | Part tabs | Sticky four-part pill bar on the Happiness at Work page. A swipeable chip row on phones. |
 | Topic | Heading sticks in a 300px left column while the content scrolls. Stacks on tablets and phones. |
+| Bio card | Paper card on cream: eyebrow, serif-italic name, uppercase role, then the bio below a hairline. The author's card is wider than the website builder's, and they stack on tablets and phones. |
 | Stat badge | Circle with an italic serif number and a tiny uppercase label. |
 | Reader | Sticky chapter rail (a chip row on mobile), progress bar, big italic numeral, prev/next pager. Arrow keys turn pages. |
 | Practice box | Cream card with numbered serif-italic step circles. Can open the guided player. |
+| Listen button | Small pill under a practice step, shown only when that step has a recording. Turns solid terracotta while playing and counts down the time left. One plays at a time. |
 | Callout | Blush card with an eyebrow title and an optional text link. |
 | Prompt | Serif-italic question with a lined-paper textarea. Notes autosave in the browser and sync between the chapter and the journal. |
 | Reflection deck | All journal questions in one swipeable row. Two cards on desktop, one with the next peeking in on phones. Swipe, drag, use the arrows or jump by section. Segmented bars show position and which questions are answered. |

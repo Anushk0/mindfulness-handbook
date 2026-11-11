@@ -3,8 +3,9 @@
 
    The chapters follow the sections and topics of "Mindfulness Handbook:
    Embark Edition" by Dr Priyal Panchal. The wording is written for this
-   website. One short line in `quote` is the author's own, with credit. To use
-   the author's exact text, replace the fields below with it.
+   website. One short line in `quote` is the author's own, with credit, and
+   `author.bio` is the author's bio note as supplied. To use the author's exact
+   text elsewhere, replace the fields below with it.
 
    Mini-markup you can use inside any text field:
      *words*    -> italic serif accent (the signature "accent word")
@@ -18,6 +19,7 @@
      { type: "cards",     cols?, items: [{ title, text, note? }] }
      { type: "callout",   title?, text, action?: { label, href } }
      { type: "practice",  title, steps: [], practiceId? }   // practiceId opens a guided practice
+                                                            // a step can be { text, audio } to add a Listen button
      { type: "prompt",    key, text }                       // key must be unique; saves to the journal
      { type: "quote",     text, cite? }
 
@@ -278,11 +280,11 @@ window.HANDBOOK = {
           title: "Try this · The five daily basics",
           practiceId: "desk-reset",
           steps: [
-            "**Eyes.** Keep your head still and look up, down, right and left.",
-            "**Neck.** Lower your chin to your chest, then turn slowly to look over each shoulder.",
-            "**Spine.** Rest one forearm on the back of your chair and twist gently towards it. Change sides.",
-            "**Shoulders.** Put your fingertips on your collarbones, lift your elbows out to the sides and circle them slowly.",
-            "**Knees.** Sit back, lift one foot and circle your lower leg five times each way. Change legs."
+            { text: "**Eyes.** Keep your head still and look up, down, right and left.", audio: "eyes" },
+            { text: "**Neck.** Lower your chin to your chest, then turn slowly to look over each shoulder.", audio: "neck" },
+            { text: "**Spine.** Rest one forearm on the back of your chair and twist gently towards it. Change sides.", audio: "spine" },
+            { text: "**Shoulders.** Put your fingertips on your collarbones, lift your elbows out to the sides and circle them slowly.", audio: "shoulders" },
+            { text: "**Knees.** Sit back, lift one foot and circle your lower leg five times each way. Change legs.", audio: "knees" }
           ]
         },
         { type: "callout", title: "Go gently", text: "Move slowly and stop if anything hurts. If you have an injury or a medical condition, check with a doctor first." },
@@ -423,9 +425,24 @@ window.HANDBOOK = {
     }
   ],
 
+  /* Chair yoga recordings, one for each of the five daily basics.
+     Put the files in the audio/ folder and add each path here, for example
+     "audio/chair-yoga-eyes.mp3". Until a stretch has a file, it shows no Listen
+     button and the guided practice runs without that sound. */
+  recordings: {
+    eyes: "",
+    neck: "",
+    spine: "",
+    shoulders: "",
+    knees: ""
+  },
+
   /* Guided practices open in a full-screen player.
      Each step's seconds add up to the practice length.
-     Add an audio file (e.g. "audio/desk-reset.mp3") to play a recording alongside. */
+     Add an audio file (e.g. "audio/desk-reset.mp3") to play one recording
+     alongside the whole practice. Or give a step `audio` (a name from
+     `recordings`) to start that recording when the step begins, and make the
+     steps it covers at least as long as the recording. */
   practices: [
     {
       id: "one-minute",
@@ -454,13 +471,13 @@ window.HANDBOOK = {
       description: "The five daily basics for your eyes, neck, spine, shoulders and knees, paced for you.",
       steps: [
         { text: "Sit tall with both feet on the floor. Move slowly, and stop if anything hurts.", seconds: 12 },
-        { text: "*Eyes.* Keep your head still. Look up, down, right and left.", seconds: 20 },
-        { text: "*Neck.* Lower your chin towards your chest and feel the back of your neck lengthen.", seconds: 15 },
+        { text: "*Eyes.* Keep your head still. Look up, down, right and left.", seconds: 20, audio: "eyes" },
+        { text: "*Neck.* Lower your chin towards your chest and feel the back of your neck lengthen.", seconds: 15, audio: "neck" },
         { text: "Turn your head slowly to look over your right shoulder, then your left.", seconds: 20 },
-        { text: "*Spine.* Rest your right forearm on the back of your chair and twist gently towards it.", seconds: 18 },
+        { text: "*Spine.* Rest your right forearm on the back of your chair and twist gently towards it.", seconds: 18, audio: "spine" },
         { text: "Come back to centre, then twist the other way.", seconds: 18 },
-        { text: "*Shoulders.* Fingertips on your collarbones, elbows out. Circle your elbows slowly.", seconds: 20 },
-        { text: "*Knees.* Lift your right foot and circle your lower leg five times each way.", seconds: 22 },
+        { text: "*Shoulders.* Fingertips on your collarbones, elbows out. Circle your elbows slowly.", seconds: 20, audio: "shoulders" },
+        { text: "*Knees.* Lift your right foot and circle your lower leg five times each way.", seconds: 22, audio: "knees" },
         { text: "Now the left leg. Five circles each way.", seconds: 22 },
         { text: "Rest your hands. Notice how your body feels now.", seconds: 13 }
       ]
@@ -504,7 +521,7 @@ window.HANDBOOK = {
   ],
 
   quote: {
-    text: "“Meant to be used with sincerity, sensitivity, and respect for individual journeys.”",
+    text: "“It is meant to be used with sincerity, sensitivity, and respect for individual journeys.”",
     cite: "Dr Priyal Panchal, Author's Note"
   },
 
@@ -515,7 +532,30 @@ window.HANDBOOK = {
     note: [
       "This handbook began with news reports of working professionals and young students losing their lives, and with the hope that better everyday mental health habits might help, even a little. World Mental Health Day 2025, with its focus on access to services, shaped where it went next.",
       "It is a mental health management aid, grounded in positive psychology and bibliotherapy. The Embark Edition is the first of three, and an app version is being designed to reach more people."
+    ],
+    // the author's bio note, word for word as supplied
+    bio: [
+      "Dr. Priyal Panchal is an Indian poet with a doctoral thesis about Poetry. She won the 1st prize for her pattern poem at the TATA Lit Live fest in 2015. Her poems have been published in anthologies by reputed institutions such as the Sahitya Akademi and the University of Mumbai.",
+      "Currently, she is working with the NMIMS University as an Assistant Professor at their Mukesh Patel School of Technology Management and Engineering. She has published papers, won best paper prizes, presented at International Conferences (like ICSD), and co-edited a book. She has been invited to deliver talks, guest lectures, and workshops at various colleges on a variety of topics ranging from Creative Writing to Emerging Avenues for Multidisciplinary Research.",
+      "Her academic acumen satiates her mind, and her poetry satiates her soul. She is a certified yoga teacher and a positive psychology enthusiast."
     ]
+  },
+
+  /* The person who designed and built this website. */
+  builder: {
+    name: "Anushk Agrawal",
+    role: "Designer and developer",
+    bio: [
+      "Anushk designed and built this website, turning the Embark Edition flipbook into something to use as well as read: chapters at your own pace, guided practices, worksheets and a private journal that stays on your device."
+    ]
+  },
+
+  /* The bio notes band, right after About. */
+  people: {
+    eyebrow: "Bio notes",
+    heading: "The people *behind* it",
+    authorLabel: "About the author",
+    builderLabel: "About the website"
   },
 
   disclaimer: {

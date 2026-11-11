@@ -1044,6 +1044,21 @@ body.menu-open .burger span:last-child { top: 4.25px; transform: rotate(-45deg);
   font-size: .95rem;
 }
 .practice-box .pill { margin-top: 1.6rem; }
+.practice-box .listen {
+  display: flex;
+  width: fit-content;
+  margin-top: .65rem;
+  font-variant-numeric: tabular-nums;
+}
+.listen__icon {
+  flex: none;
+  border-style: solid;
+  border-width: .42em 0 .42em .68em;
+  border-color: transparent transparent transparent currentColor;
+}
+.listen.is-playing { background: var(--terracotta); border-color: var(--terracotta); color: #fff; }
+.listen.is-playing:hover { background: var(--terra-deep); border-color: var(--terra-deep); }
+.listen.is-playing .listen__icon { width: .66em; height: .84em; border-width: 0 .22em; border-color: currentColor; }
 
 .pull {
   margin: 2.4rem 0 0;
@@ -1367,6 +1382,38 @@ body.menu-open .burger span:last-child { top: 4.25px; transform: rotate(-45deg);
   box-shadow: var(--shadow-soft);
 }
 .portrait img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- 15b. Bio notes ---------- */
+.people { padding: var(--section-pad) 0; background: var(--cream); }
+.people__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 32px);
+  align-items: start;
+  max-width: 1080px;
+  margin-inline: auto;
+}
+.person {
+  padding: clamp(1.6rem, 3.4vw, 2.6rem);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  background: var(--paper);
+}
+.person .eyebrow { margin-bottom: .8rem; }
+.person__name {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.55rem, 2.4vw, 2rem);
+  line-height: 1.2;
+}
+.person__role {
+  margin-top: .45rem;
+  font-size: .72rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.person__bio { margin-top: 1.4rem; padding-top: 1.4rem; border-top: 1px solid var(--line); }
 
 /* ---------- 16. Feedback + disclaimer ---------- */
 .feedback { padding: var(--section-pad) 0; background: var(--blush); }
@@ -1950,6 +1997,7 @@ body.menu-open .burger span:last-child { top: 4.25px; transform: rotate(-45deg);
 
   .about__panel { justify-self: stretch; width: auto; }
   .about__media { min-height: 0; padding: 56px var(--page-pad); }
+  .people__grid { grid-template-columns: minmax(0, 1fr); }
   .portrait { width: min(320px, 78%); }
 
   .pacer { padding: clamp(64px, 14vw, 96px) 0; }
@@ -2182,6 +2230,8 @@ html.reduce-motion .ov-orb__core {
   .js [data-reveal] { opacity: 1 !important; transform: none !important; filter: none !important; }
   .welcome, .about { display: block; background: none; color: #222; }
   .about .h2, .about__quote p, .about__sign span { color: #222 !important; }
+  .people { padding: .6cm 0 0; background: none; }
+  .person { background: none; border-color: #ccc; break-inside: avoid; margin-bottom: .4cm; }
   .reader, .reflect { padding: 0; background: none; border: 0; }
   .print-chapters { display: block; }
   .print-chapters .chapter__inner { break-before: page; }
