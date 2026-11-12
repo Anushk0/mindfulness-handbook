@@ -1,37 +1,38 @@
 ---
-version: 1.0
+version: 2.0
 name: Mindfulness Handbook — Web Edition
-description: A warm-paper wellness system. Light geometric sans for reading, an italic serif "accent word" for feeling, one terracotta accent, pill buttons, arch-shaped frames and slow, breath-paced motion. Built to turn a printed handbook into a calm long-scroll website.
+description: A linen-and-evergreen wellness system. Newsreader serif headings, Manrope for reading, an italic "accent word" for feeling, one evergreen accent with saffron highlights, pill buttons, arch-shaped frames and slow, breath-paced motion. Built to turn a printed handbook into a calm long-scroll website.
 
 colors:
-  paper: "#fffcf7"        # elevated cards, reader band
-  cream: "#f6f0e6"        # default canvas
-  cream-2: "#efe6d8"
-  blush: "#f8ebe4"        # soft panels, callouts, feedback band
-  blush-2: "#f3dcd2"
-  rose: "#e0a596"         # decorative only (numerals, focus glow)
-  terracotta: "#b65a4f"   # THE accent: fills, large text, ticker (white text 4.6:1)
-  terra-ink: "#a34a40"    # small accent text on cream (5.1:1), deep panels
-  terra-deep: "#8f4038"   # hover/pressed on solid
-  clay-light: "#f0b7a8"   # accent on dark surfaces
+  # token names are kept from v1 so the code didn't need renaming; the values are the v2 palette
+  paper: "#fbfaf6"        # elevated cards, reader band
+  cream: "#f2f1ea"        # linen: default canvas
+  cream-2: "#e7e7dc"
+  blush: "#e8f0eb"        # mist: soft panels, callouts, feedback band
+  blush-2: "#d5e5dc"
+  rose: "#93bfad"         # seafoam: decorative only (numerals, focus glow)
+  terracotta: "#2e6b5e"   # evergreen, THE accent: fills, large text, links (white text 6.2:1)
+  terra-ink: "#275b50"    # small accent text on linen (6.9:1), deep panels
+  terra-deep: "#1e4840"   # hover/pressed on solid
+  clay-light: "#f1c27d"   # saffron: accent on dark surfaces
   olive: "#6f7a4a"        # illustration + "saved" state
   sage: "#c5cdb0"
-  sand: "#e3cfb4"
-  gold: "#d4a55a"         # illustration only
-  ink: "#3a302b"          # headings (11.3:1 on cream)
-  ink-soft: "#5e534c"     # body (6.6:1 on cream)
-  muted: "#72675e"        # captions (4.8:1 on cream)
-  line: "#e4d8c8"         # hairlines
-  dusk: "#3b2f2a"         # practice band, player
-  charcoal: "#2b2522"     # footer
-  on-dark: "#f6efe7"
-  on-dark-soft: "#cfc3b8"
+  sand: "#e8d6aa"
+  gold: "#d39a3e"         # saffron, illustration only
+  ink: "#22302b"          # headings (12.2:1 on linen)
+  ink-soft: "#4a5752"     # body (6.7:1 on linen)
+  muted: "#5f6d67"        # captions (4.8:1 on linen)
+  line: "#d8dccf"         # hairlines
+  dusk: "#1d3631"         # practice band, player
+  charcoal: "#16211e"     # footer
+  on-dark: "#eef2ec"
+  on-dark-soft: "#c2cdc6"
 
 typography:
-  sans: Jost (300 / 400 / 500)          # stand-in for a light geometric sans
-  serif: Fraunces italic (300 / 400)    # accent words, numerals, prompts, quotes
-  display:  { family: sans, size: "clamp(2.6rem, 6.6vw, 5.9rem)", weight: 300, lineHeight: 1.04, tracking: "-0.025em" }
-  h2:       { family: sans, size: "clamp(1.9rem, 3.7vw, 3.15rem)", weight: 300, lineHeight: 1.12 }
+  sans: Manrope (300–700)               # body, eyebrows, buttons
+  serif: Newsreader (300–600, roman + italic)   # headings, accent words, numerals, prompts, quotes
+  display:  { family: serif, size: "clamp(2.6rem, 6.6vw, 5.9rem)", weight: 300, lineHeight: 1.04, tracking: "-0.025em" }
+  h2:       { family: serif, size: "clamp(1.9rem, 3.7vw, 3.15rem)", weight: 300, lineHeight: 1.12 }
   lead:     { family: sans, size: "clamp(1.22rem, 1.9vw, 1.48rem)", weight: 300, lineHeight: 1.55 }
   body:     { family: sans, size: 17px, weight: 400, lineHeight: 1.7 }
   eyebrow:  { family: sans, size: 12px, weight: 500, tracking: "0.24em", case: uppercase }
@@ -65,32 +66,31 @@ motion:
 
 ## Overview
 
-The page should feel like opening a well-made paperback in morning light. Every surface is warm paper, never pure white. Type is quiet and light, and each heading carries one word set in italic serif (the **accent word**) that holds the emotion. One accent colour, terracotta, does all the signalling. Everything else is cream, blush, olive and sand, used for surfaces and illustration, never for buttons.
+The page should feel like opening a well-made paperback in morning light. Every surface is linen or mist, never pure white. Headings are set in a light editorial serif, and each carries one word in italic (the **accent word**) that holds the emotion. One accent colour, evergreen, does all the signalling, with saffron as its highlight on dark bands. Everything else is linen, mist, seafoam, olive and sand, used for surfaces and illustration, never for buttons.
 
 The page scrolls as a sequence of "worlds", so the reader always knows they have moved on:
 
 1. **Dawn**: hero gradient with a rising sun and layered hills
-2. **Terracotta ticker**: a moving band of single words
-3. **Split**: deep terracotta art panel next to a blush text panel
-4. **Cream**: chapter overview, grouped by section, with arch-framed art
-5. **Paper**: the reader, where long-form text is set at its most readable
-6. **Blush**: link to the Happiness at Work page
-7. **Dusk**: breathing guide and guided practices, dark and immersive
-8. **Cream**: journal
-9. **Terracotta split**: about the handbook
-10. **Cream**: bio notes for the author and the website's builder
-11. **Blush**: next edition and disclaimer
-12. **Charcoal**: footer
+2. **Split**: deep evergreen art panel next to a mist text panel
+3. **Linen**: chapter overview, grouped by section, with arch-framed art
+4. **Paper**: the reader, where long-form text is set at its most readable
+5. **Mist**: link to the Happiness at Work page
+6. **Dusk**: breathing guide and guided practices, dark and immersive
+7. **Linen**: journal
+8. **Evergreen split**: about the handbook
+9. **Linen**: bio notes for the author and the website's builder
+10. **Mist**: next edition and disclaimer
+11. **Charcoal**: footer
 
-No two neighbouring bands share a surface. The Happiness at Work page runs dawn hero (compact), terracotta ticker, paper reader, blush link back, charcoal footer.
+No two neighbouring bands share a surface. The Happiness at Work page runs dawn hero (compact), paper reader, mist link back, charcoal footer.
 
 ## Colour rules
 
-- `terracotta` is the only action colour: solid CTA pills, hover fills, the progress bar, active states and accent words.
-- Small accent text on cream uses `terra-ink` (#a34a40, 5.1:1), not `terracotta` (4.06:1).
-- White text sits only on `terracotta` or darker (ticker, solid pills, author panel uses `terra-ink`).
+- `terracotta` (evergreen) is the only action colour: solid CTA pills, hover fills, the progress bar, active states and accent words.
+- Small accent text on linen uses `terra-ink` (#275b50, 6.9:1).
+- White text sits only on `terracotta` or darker (solid pills, author panel uses `terra-ink`).
 - Earth tones (olive, sage, sand, gold, rose) live only in illustrations and decoration.
-- On dark worlds, accents switch to `clay-light`.
+- On dark worlds, accents switch to `clay-light` (saffron).
 
 ## Typography rules
 
@@ -105,7 +105,6 @@ No two neighbouring bands share a surface. The Happiness at Work page runs dawn 
 |---|---|
 | Pill button | 1px outline in `currentColor`, uppercase tracked label, 46px min height. Hover fills terracotta with white text and nudges the arrow 4px. Variants: `--solid`, `--light` (on dark), `--ghost-light`, `--sm`. |
 | Eyebrow | 12px uppercase label in `terra-ink`, 1.1rem below. |
-| Ticker | 46px terracotta band, uppercase words separated by 4px dots, a 42s linear loop that pauses on hover. |
 | Breath button | 78px glass orb with three staggered pulse rings (3.9s). Hover fills it terracotta. Opens the 1-minute practice. |
 | Chapter card | Arch-framed generated art (1:1), meta eyebrow, uppercase terracotta title, 2-line summary and a pill. The whole card is one link. On phones it becomes a compact row. |
 | Worksheet | Cream card with a serif-italic title. Pick-three chips, A to D ratings, a weekly checklist or a 2 x 2 planner. Answers autosave in the browser and are included in the download. |
@@ -134,7 +133,7 @@ Everything moves at breathing pace. Nothing snaps.
 - **Intro**: headline lines rise out of masks (1.25s, 140ms stagger), then the eyebrow, lead and button fade up. The sun rises behind the hills over 3s.
 - **Scroll reveals**: 28px rise, 6px blur and fade over 1.1s, staggered 90ms by `--i`.
 - **Parallax**: the hill layers drift at 0.10, 0.16 and 0.22 of scroll speed. The hero copy drifts and fades.
-- **Ambient**: hero colour blobs drift (24–36s), the ticker loops, and the header's "Breathe" dot breathes (6s).
+- **Ambient**: hero colour blobs drift (24–36s) and the header's "Breathe" dot breathes (6s).
 - **Hover**: each illustration has its own small gesture. Ripples widen, waves slide, the sun rises, the top stone lifts, clouds drift, the leaf sways, the trail flows. Card art also scales 1.045 over 1.4s.
 - **Page turn**: the outgoing chapter slides and tilts away (rotateY 7°, blur 3px) and the next one slides in from the other side.
 - **Header**: turns cream with a hairline after 24px of scroll, hides on scroll down and returns on scroll up.
@@ -168,7 +167,7 @@ Everything moves at breathing pace. Nothing snaps.
 
 | Source | Taken (as a pattern, not copied) | Left behind |
 |---|---|---|
-| aumlife.in | Cream + terracotta palette family, light sans with italic-serif accent words, uppercase tracked card titles, outline pills that fill on hover, terracotta word ticker, full-bleed split panels, dark-scrim photo cards, pulsing play orb, `cubic-bezier(.22,.61,.36,1)` easing | Their name, logo, photography, copy, fonts (Jeko, Gyst) and 13px body size |
+| aumlife.in (v1 only) | Early inspiration for the layout rhythm. In v2 its palette, light-sans-plus-italic-serif type pairing and word ticker were all replaced so this site is clearly its own | Their name, logo, photography, copy, fonts, palette and ticker |
 | Oura DESIGN.md | Warm-paper canvas, "serif for feeling, sans for facts", thin display weights, stat circles, soft warm shadows, 24px cards | The single blue CTA (terracotta plays that role here) |
 | Claude DESIGN.md | Surface-alternation rule (never repeat a band), cream + dark rhythm, 96–144px section pace | Slab serif, coral |
 | Clay DESIGN.md | Generous radii, illustration as the brand's voice, cycling tinted cards | Saturated six-colour card palette |

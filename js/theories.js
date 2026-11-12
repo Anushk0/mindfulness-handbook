@@ -17,16 +17,15 @@
 window.THEORIES = {
   meta: {
     title: "Happiness at Work",
-    description: "The main theories of well-being, motivation and teamwork, explained in plain language."
+    description: "The main theories of well-being, motivation and teamwork, with practical activities."
   },
 
   hero: {
     eyebrow: "The ideas behind the handbook",
     headline: ["What helps people", "*thrive* at work?"],
-    lead: "The main theories of well-being, motivation and teamwork, in plain language. Topics follow the Happiness at Work course by Dr Priyal Panchal."
+    lead: "The main theories of well-being, motivation and teamwork, with practical activities. Topics follow the Happiness at Work course by Dr Priyal Panchal."
   },
 
-  ticker: ["Well-being", "Motivation", "Inner resources", "Social capital", "Group dynamics"],
 
   parts: [
     /* ---------- Part 1 ---------- */

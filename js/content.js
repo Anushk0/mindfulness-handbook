@@ -52,7 +52,6 @@ window.HANDBOOK = {
     practiceId: "one-minute"
   },
 
-  ticker: ["Self", "Emotions", "Excellence", "Pause", "Breathe", "Begin again"],
 
   welcome: {
     overlay: { small: "Welcome", large: "to the Embark Edition" },
@@ -295,7 +294,7 @@ window.HANDBOOK = {
             "**Aachar, how you behave.** Act with care and attention, towards others and yourself.",
             "**Vichaar, how you think.** When a thought loop turns negative, steer it towards something useful.",
             "**Aahaar, how you eat.** Keep portions modest, keep mealtimes regular and stop short of full.",
-            "**Vihaar, how you play.** Spend time on something so enjoyable that the hours slip by."
+            "**Vihaar, how you re-energise.** Spend time on something so enjoyable that the hours slip by."
           ]
         },
         { type: "prompt", key: "c8", text: "Which pillar needs the most attention from you right now?" }
@@ -523,8 +522,8 @@ window.HANDBOOK = {
   ],
 
   quote: {
-    text: "“It is meant to be used with sincerity, sensitivity, and respect for individual journeys.”",
-    cite: "Dr Priyal Panchal, Author's Note"
+    text: "“**I** know you **may never need therapy, but** we all **can use some positive psychology!**”",
+    cite: "Dr PP"
   },
 
   author: {

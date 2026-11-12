@@ -122,12 +122,6 @@
     $("[data-hero-scene]").innerHTML = ART.heroScene();
   }
 
-  function renderTicker(list = C.ticker) {
-    const words = Array(4).fill(list).flat();
-    const group = words.map((w) => `<span>${esc(w)}</span>`).join("");
-    $("[data-ticker]").innerHTML = `<div class="ticker__group">${group}</div><div class="ticker__group">${group}</div>`;
-  }
-
   function renderWelcome() {
     $("[data-art='welcome']").innerHTML = ART.render("welcome");
     $("[data-welcome-paragraphs]").innerHTML = C.welcome.paragraphs.map((p) => `<p>${rich(p)}</p>`).join("");
@@ -1331,7 +1325,6 @@
 
   function renderTheories() {
     renderHero(T.hero);
-    renderTicker(T.ticker);
     const links = T.parts.map((p, i) => `<li><a href="#part-${i + 1}">${esc(plain(p.short))}</a></li>`).join("");
     $("[data-menu-chapters]").innerHTML = links;
     $("[data-footer-chapters]").innerHTML = links;
@@ -1661,7 +1654,6 @@
 
   if (isHandbook) {
     renderHero();
-    renderTicker();
     renderWelcome();
     renderStats();
     renderChapterGrid();
