@@ -359,6 +359,29 @@
         return promptHTML({ key: b.key, text: b.text }, "inline");
       case "quote":
         return `<blockquote class="pull"><p>${rich(b.text)}</p>${b.cite ? `<footer>${esc(b.cite)}</footer>` : ""}</blockquote>`;
+      case "gist":
+        return `<section class="gist" aria-label="In a nutshell">
+            <p class="eyebrow">In a nutshell</p>
+            <p class="gist__intro">${rich(b.intro)}</p>
+            <ol class="gist__points">${b.points
+              .map((p) => `<li><strong>${rich(p.title)}</strong><span>${rich(p.text)}</span></li>`)
+              .join("")}</ol>
+            ${b.more && !forPrint ? `<a class="text-link gist__more" href="${esc(b.more.href)}">Go deeper: ${esc(b.more.label)} →</a>` : ""}
+          </section>`;
+      case "case": {
+        const initials = b.initials || [b.name.trim()[0]];
+        const labels = ["The situation", "What helped", "What changed"];
+        return `<figure class="case">
+            <figcaption class="case__head">
+              <span class="case__avatars" aria-hidden="true">${initials.map((i) => `<span class="case__avatar">${esc(i)}</span>`).join("")}</span>
+              <span class="case__meta"><span class="eyebrow">Case in point</span><span class="case__who"><strong>${esc(b.name)}</strong> · ${esc(b.role)}</span></span>
+            </figcaption>
+            <ol class="case__beats">${b.beats
+              .map((t, i) => `<li><span class="case__label">${labels[i] || ""}</span><p>${rich(t)}</p></li>`)
+              .join("")}</ol>
+            <p class="case__takeaway"><span>The takeaway</span>${rich(b.takeaway)}</p>
+          </figure>`;
+      }
       case "cards":
         return `<div class="cards${b.cols ? ` cards--${b.cols}` : ""}">${b.items
           .map(

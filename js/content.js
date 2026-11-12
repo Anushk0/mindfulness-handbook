@@ -22,6 +22,8 @@
                                                             // a step can be { text, audio } to add a Listen button
      { type: "prompt",    key, text }                       // key must be unique; saves to the journal
      { type: "quote",     text, cite? }
+     { type: "gist",      intro, points: [{ title, text }], more?: { label, href } }   // "In a nutshell"
+     { type: "case",      name, role, initials?: [], beats: [situation, what helped, what changed], takeaway }
 
    Worksheets (answers are saved in the visitor's browser):
      { type: "choices",   key, title, max, options: [] }
@@ -78,11 +80,44 @@ window.HANDBOOK = {
       section: "A",
       title: "Who you are on a good day",
       art: "clouds",
-      minutes: 3,
+      minutes: 5,
       summary: "Choose the words that describe how you usually take on the world.",
       blocks: [
         { type: "lead", text: "Before you try to change anything, get a clear picture of how you tend to show up." },
         { type: "p", text: "We all have a default style when things get difficult. Some people take charge, some work out what's really going on, some look after everyone else. Naming your style makes it easier to use on purpose." },
+        {
+          type: "gist",
+          intro: "Personality is one of the steadiest influences on how happy and effective you feel, and it shows most clearly *under pressure.*",
+          points: [
+            {
+              title: "Everyone has a default",
+              text: "When things go wrong, most of us reach for the same move every time: take charge, dig for the cause, or look after people."
+            },
+            {
+              title: "Traits feed well-being",
+              text: "Happiness research lists personality, including self-efficacy, optimism and self-esteem, among its main determinants."
+            },
+            {
+              title: "Naming it helps",
+              text: "Once you know your style, you can lean on it deliberately, and notice when a moment needs a different one."
+            }
+          ],
+          more: {
+            label: "What shapes happiness",
+            href: "happiness-at-work.html#part-1"
+          }
+        },
+        {
+          type: "case",
+          name: "Meera",
+          role: "Operations coordinator",
+          beats: [
+            "Two days before a launch, a client's order went missing. The whole team panicked and everyone tried to fix everything at once.",
+            "Meera felt the pull into Decoder mode, tracing what had gone wrong, while a colleague, a natural Healer, was already reassuring the client. They split the work along those lines, with their manager as Leader, setting priorities.",
+            "The order was traced and resent within a day. The team now names who's doing what at the start of every crisis."
+          ],
+          takeaway: "A style you can name is a style you can use on purpose."
+        },
         {
           type: "choices",
           key: "a-roles",
@@ -99,11 +134,44 @@ window.HANDBOOK = {
       section: "A",
       title: "Write your own pledge",
       art: "path",
-      minutes: 4,
+      minutes: 6,
       summary: "A few lines, in your own words, about how you intend to live and work.",
       blocks: [
         { type: "lead", text: "A pledge turns good intentions into a few lines you can hold yourself to." },
         { type: "p", text: "Write it for yourself, not for anyone else. It should describe the personal culture you want to live by and give you something to check your decisions against, especially on a bad day." },
+        {
+          type: "gist",
+          intro: "Gandhi described happiness as harmony between what you think, what you say and what you do. A pledge is a tool for *keeping that harmony.*",
+          points: [
+            {
+              title: "Values first",
+              text: "Your pledge starts from the few things you won't trade away, not from what others expect of you."
+            },
+            {
+              title: "Fit matters",
+              text: "Work feels lighter when your values line up with the culture around you, and heavier when they pull apart."
+            },
+            {
+              title: "A check for bad days",
+              text: "When you're tired or under pressure, a written pledge is quicker to consult than your conscience."
+            }
+          ],
+          more: {
+            label: "Values and culture at work",
+            href: "happiness-at-work.html#part-2"
+          }
+        },
+        {
+          type: "case",
+          name: "Arjun",
+          role: "Junior analyst",
+          beats: [
+            "Arjun valued honesty but kept agreeing to deadlines that couldn't be met, then working late to hide the gap.",
+            "One line of the pledge read: “I will say what's realistic, early.” At the next planning meeting, Arjun said on day one that the report needed four days, not two.",
+            "The manager moved the deadline without fuss. The late nights stopped, and Arjun's estimates became the ones the team relied on."
+          ],
+          takeaway: "A pledge earns its place when it changes what you do on an ordinary Tuesday."
+        },
         {
           type: "practice",
           title: "Try this · Draft it in ten minutes",
@@ -123,12 +191,41 @@ window.HANDBOOK = {
       section: "A",
       title: "Triggers and patterns",
       art: "ripple",
-      minutes: 4,
+      minutes: 6,
       summary: "Why the same event stresses you one day and not the next, and how to spot your patterns.",
       blocks: [
         { type: "lead", text: "One email can wreck your morning and leave a colleague completely unmoved." },
         { type: "p", text: "Stress isn't only the event. It is the event plus how you read it in that moment, which is why triggers differ between people and can even differ for you from one week to the next." },
         { type: "p", text: "A lot of lost balance comes from mental time travel: going back over what went wrong, or rehearsing what might. Once you can see which situations send you there, you can catch it earlier and come back to now." },
+        {
+          type: "gist",
+          intro: "Stress is an emotional response to strain. Left running for months, it can harden into *burnout.*",
+          points: [
+            {
+              title: "Stress",
+              text: "A response to a particular pressure. It rises and falls with the situation and with how you read it."
+            },
+            {
+              title: "Burnout",
+              text: "A syndrome that builds from chronic stress at work: exhaustion, distance from the job and a sense that nothing you do counts."
+            },
+            {
+              title: "Two selves",
+              text: "Daniel Kahneman separated the experiencing self from the remembering self. Memory reshapes events, so replaying them can feel worse than living them."
+            }
+          ]
+        },
+        {
+          type: "case",
+          name: "Kabir",
+          role: "Sales manager",
+          beats: [
+            "Kabir dreaded the Monday review and felt tense from Sunday evening onwards.",
+            "Two weeks of mapping showed the trigger wasn't the meeting itself. It was being asked for numbers on the spot. So Kabir began sending a one-page summary every Friday afternoon.",
+            "The questions moved from the gaps to the plan, and Sunday evenings came back."
+          ],
+          takeaway: "Find the exact moment that sets you off, and you can often change it."
+        },
         {
           type: "practice",
           title: "Try this · Map one trigger",
@@ -157,11 +254,48 @@ window.HANDBOOK = {
       section: "B",
       title: "Your own definition of happiness",
       art: "sunrise",
-      minutes: 3,
+      minutes: 5,
       summary: "Find the moments when time disappeared, and work out what they have in common.",
       blocks: [
         { type: "lead", text: "Happiness is easier to build once you know what yours looks like." },
         { type: "p", text: "It's tempting to treat happiness as something that turns up by luck. This section treats it as something you make, step by step, starting with a definition that belongs to you." },
+        {
+          type: "gist",
+          intro: "There's no single definition. Aristotle saw happiness as living virtuously; psychologists describe joy, satisfaction and well-being. What it means *to you* is what counts.",
+          points: [
+            {
+              title: "It's subjective",
+              text: "The same person can feel happy for different reasons at different times."
+            },
+            {
+              title: "Culture shapes it",
+              text: "In collectivist cultures such as Japan, group harmony often matters more than one person's happiness. Individualistic cultures put the individual first."
+            },
+            {
+              title: "So does life stage",
+              text: "Younger people tend to link happiness with freedom and self-expression. Later in life it leans towards stability and security."
+            }
+          ],
+          more: {
+            label: "How happiness is defined",
+            href: "happiness-at-work.html#part-1"
+          }
+        },
+        {
+          type: "case",
+          name: "Sana and Mr Iyer",
+          role: "Same team, different definitions",
+          initials: [
+            "S",
+            "I"
+          ],
+          beats: [
+            "After the team's best quarter, their manager rewarded everyone the same way: a bonus and a team dinner.",
+            "In one-to-ones, Sana, 24, said what would really matter was leading a small pilot project. Mr Iyer, 52, wanted a predictable schedule to care for an ageing parent.",
+            "The next quarter, each got what mattered to them. Both said it meant more than the bonus had."
+          ],
+          takeaway: "Happiness is personal. Define yours before you chase it."
+        },
         {
           type: "practice",
           title: "Try this · Find your moment",
@@ -182,10 +316,43 @@ window.HANDBOOK = {
       section: "B",
       title: "What shapes your happiness",
       art: "stones",
-      minutes: 3,
+      minutes: 5,
       summary: "A quick rating of four areas of life, to repeat every two weeks.",
       blocks: [
         { type: "lead", text: "A short check-in shows where life feels full and where it's running thin." },
+        {
+          type: "gist",
+          intro: "Psychologist Ed Diener, often called Dr Happiness, measured well-being as more pleasant feelings, fewer painful ones and *satisfaction with life* as a whole.",
+          points: [
+            {
+              title: "Many sources",
+              text: "Health, relationships, income, personality, culture and even your neighbourhood all feed into it."
+            },
+            {
+              title: "Two kinds of factor",
+              text: "Frederick Herzberg found that pay and conditions only prevent dissatisfaction. Growth, achievement and recognition are what actually motivate."
+            },
+            {
+              title: "Three essentials",
+              text: "Annie McKee sums it up as a meaningful vision of the future, a sense of purpose and good relationships at work."
+            }
+          ],
+          more: {
+            label: "Herzberg's two factors",
+            href: "happiness-at-work.html#part-2"
+          }
+        },
+        {
+          type: "case",
+          name: "Rahul",
+          role: "Software engineer",
+          beats: [
+            "Rahul earned ₹12 lakh a year. A rival firm offered ₹12.6 lakh, only 5% more.",
+            "But the new role came with international projects, leadership responsibility, mentoring and a clear path to promotion.",
+            "Rahul accepted the same day."
+          ],
+          takeaway: "A small raise rarely moves people. A chance to grow often does, which is why learning and growth come first in the check-in below."
+        },
         {
           type: "rating",
           key: "b-factors",
@@ -206,11 +373,44 @@ window.HANDBOOK = {
       section: "B",
       title: "Happy hormones",
       art: "waves",
-      minutes: 4,
+      minutes: 6,
       summary: "Small activities that can lift your mood, and a checklist to cover them all in a week.",
       blocks: [
         { type: "lead", text: "What you do changes how you feel, sometimes faster than what you think." },
         { type: "p", text: "In the Guru–shishya tradition, a teacher might set a student a task that seemed unrelated to the lesson, until the student was in the right frame of mind to learn. Modern physiology points the same way: activity affects mood." },
+        {
+          type: "gist",
+          intro: "Your brain keeps reshaping itself around what you do often. Positive organisational psychology uses this *neuroplasticity* to build better habits at work.",
+          points: [
+            {
+              title: "Four messengers",
+              text: "Dopamine for reward, oxytocin for trust, serotonin for calm and endorphins for relief are a handy way to group mood-lifting activities."
+            },
+            {
+              title: "Small and often",
+              text: "Short, repeatable actions do more than one big effort."
+            },
+            {
+              title: "Give it time",
+              text: "The Dalai Lama names determination, effort and time as the real ingredients of lasting happiness."
+            }
+          ],
+          more: {
+            label: "Positive organisational psychology",
+            href: "happiness-at-work.html#part-3"
+          }
+        },
+        {
+          type: "case",
+          name: "Ritu",
+          role: "Customer support lead",
+          beats: [
+            "Every day around 3 pm, Ritu hit a slump: flat mood, short temper, too many tabs open.",
+            "Ritu split the ticket queue into batches of five (dopamine), took a ten-minute walk in daylight (serotonin) and thanked one teammate by name in the team chat (oxytocin).",
+            "After two weeks the slump was smaller, and the team chat was noticeably warmer."
+          ],
+          takeaway: "Mood follows action. Pick the smallest step you'll actually repeat."
+        },
         {
           type: "checklist",
           key: "b-hormones",
@@ -234,10 +434,28 @@ window.HANDBOOK = {
       section: "C",
       title: "Psychological capital and affirmations",
       art: "horizon",
-      minutes: 5,
+      minutes: 7,
       summary: "Four inner resources you can grow on purpose, and words to keep them going.",
       blocks: [
         { type: "lead", text: "Money is one kind of capital. Your inner resources are another, and they grow when you invest in them." },
+        {
+          type: "gist",
+          intro: "Fred Luthans defined psychological capital in 2006 as a positive state you can *develop*, not a fixed trait.",
+          points: [
+            {
+              title: "Built, not born",
+              text: "Unlike general intelligence, PsyCap grows with deliberate practice, often in a short time."
+            },
+            {
+              title: "Measurable",
+              text: "Each of its four parts can be assessed and tracked, which makes it useful for personal and team growth."
+            },
+            {
+              title: "Good for work",
+              text: "Teams with higher PsyCap tend to be more engaged, more innovative and healthier."
+            }
+          ]
+        },
         { type: "p", text: "Psychological capital is what helps you get past obstacles. It has four parts, easy to remember as HERO." },
         {
           type: "cards",
@@ -247,6 +465,17 @@ window.HANDBOOK = {
             { title: "Resilience", text: "Staying upright when life knocks you.", note: "**Grow it:** write down what past difficulties taught you, keep moving or meditating, and stay close to people you can talk to." },
             { title: "Optimism", text: "Keeping a hopeful view when a negative one would be easier.", note: "**Grow it:** list what you're grateful for, ask what a failure taught you and let yourself laugh." }
           ]
+        },
+        {
+          type: "case",
+          name: "Ishita",
+          role: "Project lead",
+          beats: [
+            "Ishita spent eight months leading a major project. Then a change in company strategy cancelled it overnight.",
+            "After the first wave of frustration, Ishita talked it through with the manager, wrote down what the project had taught, and volunteered to lead the next difficult one.",
+            "Those lessons carried straight into the new project, which got off the ground in half the time."
+          ],
+          takeaway: "That's resilience and hope at work: a setback becomes material, not the end of the story."
         },
         {
           type: "callout",
@@ -270,10 +499,43 @@ window.HANDBOOK = {
       section: "C",
       title: "Yoga at your desk",
       art: "leaf",
-      minutes: 4,
+      minutes: 6,
       summary: "Five gentle movements to do every day, and the four pillars of a yogic life.",
       blocks: [
         { type: "lead", text: "Yoga is more than poses and breathing. It's also a way of resting and reconnecting with your body." },
+        {
+          type: "gist",
+          intro: "Long hours at a screen show up in the body first: tired eyes, a stiff neck and an aching back. *A few minutes of movement* undoes a surprising amount of it.",
+          points: [
+            {
+              title: "Conditions count",
+              text: "Herzberg listed working conditions, down to the chair you sit on, among the things that quietly drain satisfaction when they're wrong."
+            },
+            {
+              title: "Movement resets",
+              text: "Gentle stretches get the blood moving and break the hunch that builds up over a day."
+            },
+            {
+              title: "More than poses",
+              text: "Yoga also covers how you behave, think, eat and re-energise: the four pillars below."
+            }
+          ],
+          more: {
+            label: "Working conditions and well-being",
+            href: "happiness-at-work.html#part-2"
+          }
+        },
+        {
+          type: "case",
+          name: "Dev",
+          role: "Software developer",
+          beats: [
+            "Dev spent nine hours a day at two screens and ended most evenings with sore eyes and a stiff neck.",
+            "Dev set two reminders, at 11:30 and 4:00, and did the five daily basics below without leaving the desk. It took under four minutes.",
+            "Within a week the stiffness had eased, and evenings felt less draining."
+          ],
+          takeaway: "You don't need a mat or a class. You need a reminder."
+        },
         {
           type: "practice",
           title: "Try this · The five daily basics",
@@ -305,11 +567,40 @@ window.HANDBOOK = {
       section: "C",
       title: "Goals and priorities",
       art: "quadrants",
-      minutes: 4,
+      minutes: 6,
       summary: "Sort your day by what's urgent and what matters, then plan around it.",
       blocks: [
         { type: "lead", text: "Being busy and moving forward aren't the same thing." },
         { type: "p", text: "Start the day by listing your tasks, then ask two questions of each: how urgent is it, and how important is it? The answers put it in one of four boxes, in a grid widely known as the Eisenhower Matrix." },
+        {
+          type: "gist",
+          intro: "Hope, one of the four parts of psychological capital, grows when you *plan ahead* and set clear goals.",
+          points: [
+            {
+              title: "Make goals SMART",
+              text: "Specific, measurable, attainable, relevant and time-bound goals are easier to act on than wishes."
+            },
+            {
+              title: "Plan for obstacles",
+              text: "Deciding in advance what you'll do if things slip keeps hope going when they do."
+            },
+            {
+              title: "Sort, then act",
+              text: "Urgent tasks get attention by default. The Eisenhower Matrix makes sure the important ones do too."
+            }
+          ]
+        },
+        {
+          type: "case",
+          name: "Aditi",
+          role: "HR executive",
+          beats: [
+            "Aditi spent most days answering urgent but minor emails, while a new onboarding plan, the work that mattered most, kept slipping.",
+            "Aditi sorted a week of tasks into the four boxes, moved email into two slots a day and kept 9 to 11 each morning for one SMART goal: launch the new onboarding checklist for the March joiners by 28 February.",
+            "The checklist went live a week early, and the inbox didn't suffer."
+          ],
+          takeaway: "Protect time for the important work first. The urgent work will still find you."
+        },
         {
           type: "matrix",
           key: "c-plan",
@@ -336,10 +627,43 @@ window.HANDBOOK = {
       section: "C",
       title: "Handling conflict",
       art: "bridge",
-      minutes: 4,
+      minutes: 6,
       summary: "Five moves for working through disagreement, and a log of what works for you.",
       blocks: [
         { type: "lead", text: "Most conflict at work comes from misunderstanding or competing needs, and both can be worked with." },
+        {
+          type: "gist",
+          intro: "Kurt Lewin saw a group as a system: a change in one part ripples through the whole. A conflict between two people *affects everyone* around them.",
+          points: [
+            {
+              title: "Acknowledge it",
+              text: "Name the disagreement openly instead of working around it."
+            },
+            {
+              title: "Understand the other side",
+              text: "Share perspectives, then look at your own idea again in the light of theirs."
+            },
+            {
+              title: "Decide how to decide",
+              text: "Groups can decide by authority, majority, ranking or consensus. Agreeing on the method first avoids a second argument."
+            }
+          ]
+        },
+        {
+          type: "case",
+          name: "Farhan and Leena",
+          role: "Sales lead and product lead",
+          initials: [
+            "F",
+            "L"
+          ],
+          beats: [
+            "Farhan had promised a client a launch date. Leena knew two features weren't ready. The email thread was getting sharper by the day.",
+            "They met for twenty minutes instead. Each explained what was driving their position, and they agreed to launch the core features on time and the last two a fortnight later.",
+            "The client got a working product on the promised date, and the two teams now meet weekly before making promises."
+          ],
+          takeaway: "A short conversation about needs beats a long argument about positions."
+        },
         {
           type: "list",
           title: "Five moves that help",
@@ -365,10 +689,39 @@ window.HANDBOOK = {
       section: "C",
       title: "Social capital",
       art: "network",
-      minutes: 4,
+      minutes: 6,
       summary: "Seven qualities that build trust and goodwill around you.",
       blocks: [
         { type: "lead", text: "Economic capital is what you have. Social capital is the trust and goodwill between you and the people around you." },
+        {
+          type: "gist",
+          intro: "Social capital is the trust and goodwill in your network. Like money, it builds up over time, and you can *draw on it* when you need to.",
+          points: [
+            {
+              title: "Bonding",
+              text: "Close ties with people like you: family, friends, your own team."
+            },
+            {
+              title: "Bridging",
+              text: "Links across groups, such as other departments or people from different backgrounds."
+            },
+            {
+              title: "Linking",
+              text: "Connections with people who hold more power or resources, such as senior leaders."
+            }
+          ]
+        },
+        {
+          type: "case",
+          name: "Joseph",
+          role: "Finance associate",
+          beats: [
+            "Joseph joined the finance team knowing almost no one outside it.",
+            "Joseph made a habit of thanking people for specific help, and offered to fix spreadsheet formulas for anyone who asked, in any team.",
+            "At the year-end close, three people from other departments stepped in unasked to help reconcile the accounts."
+          ],
+          takeaway: "Goodwill compounds. Small, regular deposits pay off when it matters."
+        },
         { type: "p", text: "It grows through everyday behaviour. Try practising these seven at work." },
         {
           type: "list",
@@ -396,10 +749,43 @@ window.HANDBOOK = {
       section: "C",
       title: "Journaling",
       art: "pages",
-      minutes: 4,
+      minutes: 6,
       summary: "What to track, why reading back matters, and a page for short breaks.",
       blocks: [
         { type: "lead", text: "A few lines a day can show you patterns you'd never spot otherwise." },
+        {
+          type: "gist",
+          intro: "Daniel Kahneman showed that the remembering self rewrites experience. A journal records what actually happened, *while it's still fresh.*",
+          points: [
+            {
+              title: "Memory edits",
+              text: "We tend to recall a stretch of time by its high points and its ending, not by how most of it felt."
+            },
+            {
+              title: "Writing captures",
+              text: "A few lines a day give you evidence instead of impressions."
+            },
+            {
+              title: "Patterns appear",
+              text: "Read back after two weeks and the repeats become hard to miss."
+            }
+          ],
+          more: {
+            label: "The experiencing and remembering self",
+            href: "happiness-at-work.html#part-1"
+          }
+        },
+        {
+          type: "case",
+          name: "Tanvi",
+          role: "Content writer",
+          beats: [
+            "Tanvi felt “always tired” and blamed the workload.",
+            "For two weeks Tanvi kept a food, mood and energy journal: three lines a day, written at lunch and at bedtime.",
+            "Reading it back, the pattern was clear. The worst afternoons followed a skipped breakfast and a heavy lunch. Changing those two things did more than any extra coffee."
+          ],
+          takeaway: "Memory gives you a story. A journal gives you evidence."
+        },
         {
           type: "list",
           title: "Journals worth keeping",
