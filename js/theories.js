@@ -23,7 +23,7 @@ window.THEORIES = {
   hero: {
     eyebrow: "The ideas behind the handbook",
     headline: ["What helps people", "*thrive* at work?"],
-    lead: "The main theories of well-being, motivation and teamwork, with practical activities. Topics follow the Happiness at Work course by Dr Priyal Panchal."
+    lead: "The main theories of well-being, motivation and teamwork, with practical activities. Topics follow the Happiness at Work course taught by Dr Priyal Panchal."
   },
 
 

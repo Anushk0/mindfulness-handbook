@@ -40,8 +40,8 @@
       return svg(
         `<defs>${lin(g, [[0, "#e8f0eb"], [1, "#b5d8cc"]])}</defs>
         <rect width="400" height="500" fill="url(#${g})"/>
-        <g class="a-rings" fill="none" stroke="#2e6b5e" stroke-width="1.4">${rings}</g>
-        <circle class="a-pebble" cx="200" cy="300" r="10" fill="#2e6b5e"/>`,
+        <g class="a-rings" fill="none" stroke="#e8b750" stroke-width="1.4">${rings}</g>
+        <circle class="a-pebble" cx="200" cy="300" r="10" fill="#e8b750"/>`,
         "art--ripple"
       );
     },
@@ -54,8 +54,8 @@
         <circle class="a-sun" cx="285" cy="160" r="44" fill="#d39a3e" fill-opacity=".85"/>
         ${wave(300, 18, "#c5cdb0", 0.9, "a-w a-w1")}
         ${wave(345, 16, "#9aa57a", 0.85, "a-w a-w2")}
-        ${wave(392, 14, "#6f7a4a", 0.92, "a-w a-w3")}
-        ${wave(440, 12, "#2e6b5e", 0.6, "a-w a-w4")}`,
+        ${wave(392, 14, "#edc462", 0.92, "a-w a-w3")}
+        ${wave(440, 12, "#e8b750", 0.6, "a-w a-w4")}`,
         "art--waves"
       );
     },
@@ -69,11 +69,11 @@
         `<defs>${lin(g, [[0, "#f1f2e8"], [1, "#d7ddc4"]])}</defs>
         <rect width="400" height="500" fill="url(#${g})"/>
         <circle cx="118" cy="128" r="34" fill="#fbfaf6" fill-opacity=".75"/>
-        <ellipse cx="200" cy="446" rx="132" ry="10" fill="#6f7a4a" fill-opacity=".16"/>
-        ${stone(200, 408, 96, 34, "#6f7a4a")}
+        <ellipse cx="200" cy="446" rx="132" ry="10" fill="#edc462" fill-opacity=".16"/>
+        ${stone(200, 408, 96, 34, "#edc462")}
         ${stone(195, 350, 74, 27, "#9aa57a")}
         ${stone(205, 302, 55, 22, "#97c0b2")}
-        <g class="a-top">${stone(198, 262, 38, 17, "#2e6b5e")}</g>`,
+        <g class="a-top">${stone(198, 262, 38, 17, "#e8b750")}</g>`,
         "art--stones"
       );
     },
@@ -101,7 +101,7 @@
         <g class="a-sun"><circle cx="200" cy="330" r="74" fill="url(#${s})"/></g>
         <path d="M0 340 Q 100 300 200 330 T 400 318 V500 H0Z" fill="#b2d3c7"/>
         <path d="M0 392 Q 120 352 232 386 T 400 372 V500 H0Z" fill="#73ab99"/>
-        <path d="M0 444 Q 140 414 262 444 T 400 432 V500 H0Z" fill="#275b50"/>`,
+        <path d="M0 444 Q 140 414 262 444 T 400 432 V500 H0Z" fill="#e6ad43"/>`,
         "art--horizon"
       );
     },
@@ -119,8 +119,8 @@
         <rect width="400" height="500" fill="url(#${g})"/>
         <circle cx="300" cy="120" r="30" fill="#fbfaf6" fill-opacity=".7"/>
         <g transform="rotate(-16 200 270)"><g class="a-leaf">
-          <path d="M200 430 V 486" stroke="#6f7a4a" stroke-width="4" stroke-linecap="round"/>
-          <path d="M200 92 C 300 160 306 318 200 430 C 94 318 100 160 200 92 Z" fill="#6f7a4a"/>
+          <path d="M200 430 V 486" stroke="#edc462" stroke-width="4" stroke-linecap="round"/>
+          <path d="M200 92 C 300 160 306 318 200 430 C 94 318 100 160 200 92 Z" fill="#edc462"/>
           <g fill="none" stroke="#dbe1c9" stroke-width="2" stroke-linecap="round">
             <path d="M200 118 V 428" stroke-width="3"/>${veins}
           </g>
@@ -171,13 +171,13 @@
         .map(([x, y, r], i) => `<circle class="a-star" style="--d:${(i * 0.37).toFixed(2)}s" cx="${x}" cy="${y}" r="${r}"/>`)
         .join("");
       return svg(
-        `<defs>${lin(g, [[0, "#232925"], [1, "#2f4840"]])}
+        `<defs>${lin(g, [[0, "#dc9007"], [1, "#e3a434"]])}
           <mask id="${m}"><rect width="400" height="500" fill="#fff"/><circle cx="254" cy="150" r="46" fill="#000"/></mask></defs>
         <rect width="400" height="500" fill="url(#${g})"/>
         <g fill="#e8f0eb">${stars}</g>
         <g class="a-moon"><circle cx="232" cy="164" r="52" fill="#d5e5dc" mask="url(#${m})"/></g>
-        <path d="M0 400 Q 110 360 210 392 T 400 380 V500 H0Z" fill="#36413a"/>
-        <path d="M0 446 Q 150 416 270 446 T 400 436 V500 H0Z" fill="#16211e"/>`,
+        <path d="M0 400 Q 110 360 210 392 T 400 380 V500 H0Z" fill="#e2a12f"/>
+        <path d="M0 446 Q 150 416 270 446 T 400 436 V500 H0Z" fill="#d88b14"/>`,
         "art--moon"
       );
     },
@@ -190,7 +190,7 @@
         <rect width="400" height="500" fill="url(#${g})"/>
         <circle cx="96" cy="96" r="26" fill="#fbfaf6" fill-opacity=".8"/>
         <path d="${d}" fill="none" stroke="#b3d4c9" stroke-width="36" stroke-linecap="round"/>
-        <path class="a-trail" d="${d}" fill="none" stroke="#2e6b5e" stroke-width="2.2" stroke-dasharray="2 12" stroke-linecap="round"/>
+        <path class="a-trail" d="${d}" fill="none" stroke="#e8b750" stroke-width="2.2" stroke-dasharray="2 12" stroke-linecap="round"/>
         <g fill="#9aa57a"><circle cx="70" cy="330" r="7"/><circle cx="86" cy="342" r="4"/><circle cx="330" cy="150" r="6"/><circle cx="344" cy="162" r="3.5"/><circle cx="318" cy="440" r="5"/></g>`,
         "art--path"
       );
@@ -207,7 +207,7 @@
       return svg(
         `<defs>${lin(g, [[0, "#e8f0eb"], [1, "#c7e0d7"]])}</defs>
         <rect width="400" height="500" fill="url(#${g})"/>
-        <g class="a-arches">${arch(340, 440, "#add3c6", 0.55)}${arch(260, 360, "#82bda9", 0.6)}${arch(180, 280, "#42967e", 0.78)}${arch(100, 200, "#275b50", 0.92)}</g>
+        <g class="a-arches">${arch(340, 440, "#add3c6", 0.55)}${arch(260, 360, "#82bda9", 0.6)}${arch(180, 280, "#f0ce70", 0.78)}${arch(100, 200, "#e6ad43", 0.92)}</g>
         <g class="a-sun"><circle cx="200" cy="196" r="20" fill="#d39a3e"/></g>`,
         "art--arches"
       );
@@ -220,7 +220,7 @@
       return svg(
         `<defs>${lin(g, [[0, "#eaf3ed"], [1, "#cae3da"]])}</defs>
         <rect width="400" height="500" fill="url(#${g})"/>
-        ${pane(62, 96, "#2e6b5e", 0.92, "a-pane")}${pane(210, 96, "#d39a3e", 0.72)}${pane(62, 254, "#9aa57a", 0.82)}${pane(210, 254, "#fbfaf6", 0.8)}`,
+        ${pane(62, 96, "#e8b750", 0.92, "a-pane")}${pane(210, 96, "#d39a3e", 0.72)}${pane(62, 254, "#9aa57a", 0.82)}${pane(210, 254, "#fbfaf6", 0.8)}`,
         "art--quadrants"
       );
     },
@@ -232,11 +232,11 @@
         <rect width="400" height="500" fill="url(#${g})"/>
         <circle class="a-sun" cx="200" cy="170" r="46" fill="#d39a3e" fill-opacity=".8"/>
         <g fill="none" stroke-linecap="round" stroke-width="16">
-          <path class="a-span a-span--l" d="M34 392 Q 104 228 182 300" stroke="#275b50"/>
-          <path class="a-span a-span--r" d="M366 392 Q 296 228 218 300" stroke="#6f7a4a"/>
+          <path class="a-span a-span--l" d="M34 392 Q 104 228 182 300" stroke="#e6ad43"/>
+          <path class="a-span a-span--r" d="M366 392 Q 296 228 218 300" stroke="#edc462"/>
         </g>
         <path d="M0 404 Q 100 384 200 404 T 400 400 V500 H0Z" fill="#73ab99"/>
-        <path d="M0 448 Q 120 428 240 448 T 400 442 V500 H0Z" fill="#275b50"/>`,
+        <path d="M0 448 Q 120 428 240 448 T 400 442 V500 H0Z" fill="#e6ad43"/>`,
         "art--bridge"
       );
     },
@@ -275,7 +275,7 @@
         )
         .join("");
       return svg(
-        `<defs>${lin(g, [[0, "#0c7e65"], [1, "#054c3c"]])}</defs>
+        `<defs>${lin(g, [[0, "#ebbf5c"], [1, "#e2a332"]])}</defs>
         <rect width="400" height="500" fill="url(#${g})"/>
         <g stroke="#d5e5dc" stroke-opacity=".5" stroke-width="1.6">${links}</g>
         ${dots}`,
@@ -289,14 +289,14 @@
         [0, 1, 2, 3, 4]
           .map(
             (i) =>
-              `<rect x="${x}" y="${238 + i * 26}" width="${(i % 2 ? 74 : 96)}" height="4" rx="2" fill="#2e6b5e" fill-opacity=".35"/>`
+              `<rect x="${x}" y="${238 + i * 26}" width="${(i % 2 ? 74 : 96)}" height="4" rx="2" fill="#e8b750" fill-opacity=".35"/>`
           )
           .join("");
       return svg(
         `<defs>${lin(g, [[0, "#f1f2e8"], [1, "#d7ddc4"]])}</defs>
         <rect width="400" height="500" fill="url(#${g})"/>
         <circle cx="312" cy="112" r="34" fill="#fbfaf6" fill-opacity=".75"/>
-        <ellipse cx="200" cy="436" rx="150" ry="10" fill="#6f7a4a" fill-opacity=".18"/>
+        <ellipse cx="200" cy="436" rx="150" ry="10" fill="#edc462" fill-opacity=".18"/>
         <path d="M200 208 C 160 186 96 186 56 202 V 418 C 96 402 160 402 200 424 Z" fill="#fbfaf6"/>
         <path d="M200 208 C 240 186 304 186 344 202 V 418 C 304 402 240 402 200 424 Z" fill="#e8f0eb"/>
         ${lines(84)}${lines(224)}
@@ -320,7 +320,7 @@
         .map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${1.4 + (i % 2) * 0.6}" fill="#e8f0eb" fill-opacity=".55"/>`)
         .join("");
       return svg(
-        `<defs>${lin(g, [[0, "#0c7e65"], [1, "#054c3c"]])}${lin(sky, [[0, "#c8e5db"], [1, "#e8f0eb"]])}
+        `<defs>${lin(g, [[0, "#ebbf5c"], [1, "#e2a332"]])}${lin(sky, [[0, "#c8e5db"], [1, "#e8f0eb"]])}
           <clipPath id="${clip}"><path d="${archD}"/></clipPath></defs>
         <rect width="400" height="500" fill="url(#${g})"/>
         ${dots}
@@ -329,7 +329,7 @@
           <g class="a-sun"><circle cx="278" cy="344" r="42" fill="#7fc6af"/></g>
           <path d="M190 366 Q 240 336 282 356 T 370 348 V470 H190Z" fill="#b2d3c7"/>
           <path d="M190 404 Q 252 378 306 400 T 370 394 V470 H190Z" fill="#73ab99"/>
-          <path d="M190 440 Q 262 420 320 440 T 370 436 V470 H190Z" fill="#275b50"/>
+          <path d="M190 440 Q 262 420 320 440 T 370 436 V470 H190Z" fill="#e6ad43"/>
         </g>
         <path d="${archD.replace(" Z", "")}" fill="none" stroke="#d5e5dc" stroke-opacity=".55" stroke-width="1.5"/>
         <rect x="170" y="456" width="216" height="5" rx="2.5" fill="#d5e5dc" fill-opacity=".35"/>`,
@@ -347,7 +347,7 @@
       <path class="hs-hill hs-hill--1" d="M0 262 C 180 204 360 232 540 252 S 900 212 1080 236 S 1340 262 1440 240 V420 H0Z" fill="#cee0d3"/>
       <path class="hs-hill hs-hill--2" d="M0 304 C 220 262 420 302 640 292 S 1000 252 1200 286 S 1400 302 1440 296 V420 H0Z" fill="#a9ccc0"/>
       <path class="hs-hill hs-hill--3" d="M0 352 C 240 322 480 362 720 346 S 1120 316 1440 346 V420 H0Z" fill="#75ac9a"/>
-      <path class="hs-hill hs-hill--4" d="M0 392 C 300 370 560 402 860 389 S 1260 372 1440 386 V420 H0Z" fill="#2e6b5e"/>
+      <path class="hs-hill hs-hill--4" d="M0 392 C 300 370 560 402 860 389 S 1260 372 1440 386 V420 H0Z" fill="#e8b750"/>
     </svg>`;
   }
 

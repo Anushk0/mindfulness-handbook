@@ -4,17 +4,19 @@ name: Mindfulness Handbook — Web Edition
 description: A linen-and-evergreen wellness system. Newsreader serif headings, Manrope for reading, an italic "accent word" for feeling, one evergreen accent with saffron highlights, pill buttons, arch-shaped frames and slow, breath-paced motion. Built to turn a printed handbook into a calm long-scroll website.
 
 colors:
-  # token names are kept from v1 so the code didn't need renaming; the values are the v2 palette
+  # token names are kept from v1 so the code didn't need renaming. v2.1: light greens (mist, seafoam, linen) stay; every dark green became a yellow
   paper: "#fbfaf6"        # elevated cards, reader band
   cream: "#f2f1ea"        # linen: default canvas
   cream-2: "#e7e7dc"
   blush: "#e8f0eb"        # mist: soft panels, callouts, feedback band
   blush-2: "#d5e5dc"
   rose: "#93bfad"         # seafoam: decorative only (numerals, focus glow)
-  terracotta: "#2e6b5e"   # evergreen, THE accent: fills, large text, links (white text 6.2:1)
-  terra-ink: "#275b50"    # small accent text on linen (6.9:1), deep panels
-  terra-deep: "#1e4840"   # hover/pressed on solid
-  clay-light: "#f1c27d"   # saffron: accent on dark surfaces
+  terracotta: "#f2b824"   # marigold, THE accent fill: buttons, active tabs, bars (ink text on it 7.6:1)
+  accent-ink: "#805600"   # deep gold: accent words, links, numerals on light surfaces (5.7:1 on linen)
+  sun: "#f5c94f"          # the about band
+  terra-ink: "#7a5300"    # small gold text: eyebrows, labels (6:1 on linen)
+  terra-deep: "#dfa10f"   # hover/pressed on a marigold fill
+  clay-light: "#7a4100"   # accent words on the yellow bands
   olive: "#6f7a4a"        # illustration + "saved" state
   sage: "#c5cdb0"
   sand: "#e8d6aa"
@@ -23,10 +25,10 @@ colors:
   ink-soft: "#4a5752"     # body (6.7:1 on linen)
   muted: "#5f6d67"        # captions (4.8:1 on linen)
   line: "#d8dccf"         # hairlines
-  dusk: "#1d3631"         # practice band, player
-  charcoal: "#16211e"     # footer
-  on-dark: "#eef2ec"
-  on-dark-soft: "#c2cdc6"
+  dusk: "#f7d66e"         # warm yellow band: breathing guide, player, quizzes
+  charcoal: "#eebb3a"     # deeper golden: footer, band gradients
+  on-dark: "#22302b"      # text on the yellow bands
+  on-dark-soft: "#4a3c10" # secondary text on the yellow bands
 
 typography:
   sans: Manrope (300–700)               # body, eyebrows, buttons
