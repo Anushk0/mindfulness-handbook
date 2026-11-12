@@ -140,6 +140,8 @@ a { color: inherit; }
   outline: 2px solid var(--terracotta);
   outline-offset: 3px;
 }
+/* a whole section that receives focus after an in-page jump doesn't need a frame round it */
+section[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
 
 .skip-link {
   position: fixed;

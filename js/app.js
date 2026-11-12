@@ -557,8 +557,8 @@
   }
 
   function deckStep(dir) {
-    // quick repeat presses build on where the last press was heading
-    const from = Date.now() - deck.movedAt < 450 ? deck.target : deck.index;
+    // quick repeat presses build on where the last press was heading; otherwise start from where the row is now
+    const from = Date.now() - deck.movedAt < 450 ? deck.target : deckIndex();
     deckGo(from + dir * deckPerView());
   }
 
@@ -962,8 +962,11 @@
     // arrow keys turn pages while the reader is on screen
     let readerVisible = false;
     if ("IntersectionObserver" in window) {
+      // "on screen" means the reader crosses the middle of the viewport. A ratio threshold never fires
+      // for long chapters, which can be several screens tall, so the arrow keys stayed switched off.
       new IntersectionObserver((entries) => entries.forEach((e) => (readerVisible = e.isIntersecting)), {
-        threshold: 0.2
+        rootMargin: "-40% 0px -40% 0px",
+        threshold: 0
       }).observe($("[data-reader]"));
     }
     document.addEventListener("keydown", (e) => {
@@ -1467,6 +1470,7 @@
       });
     });
     $(".quiz__foot", quiz).hidden = true;
+    $("[data-quiz-score]", quiz).textContent = "";
     $(".quiz__opt", quiz).focus({ preventScroll: true });
   }
 
@@ -1655,6 +1659,27 @@
       if (part) {
         e.preventDefault();
         goToPart(part);
+        return;
+      }
+      // Every other in-page link is scrolled here instead of by the browser. closeMenu() has just made
+      // the menu inert, and some browsers then drop the clicked link's own jump, so menu links did nothing.
+      const id = href.length > 1 ? decodeURIComponent(href.slice(1)) : "";
+      const target = id ? document.getElementById(id) : null;
+      if (!target || link.classList.contains("skip-link")) return;
+      e.preventDefault();
+      if (location.hash !== href) {
+        try {
+          history.pushState(null, "", href);
+        } catch {
+          /* some viewers refuse URL changes; the jump still happens */
+        }
+      }
+      // scrollIntoView recalculates styles first, so the menu's scroll lock is already lifted here
+      target.scrollIntoView({ behavior: reduced() ? "auto" : "smooth", block: "start" });
+      if (!e.detail) {
+        // opened from the keyboard: take focus along with the view
+        if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+        target.focus({ preventScroll: true });
       }
     });
 
